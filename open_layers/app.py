@@ -12,10 +12,10 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 app = Flask(__name__)
 
-# # Load the pre-trained model and tokenizer
-# model_name = "Hnabil/t5-address-standardizer"
-# model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
-# tokenizer = AutoTokenizer.from_pretrained(model_name)
+# Load the pre-trained model and tokenizer
+model_name = "Hnabil/t5-address-standardizer"
+model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
+tokenizer = AutoTokenizer.from_pretrained(model_name)
 
 # Get the current directory where app.py is located
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -136,36 +136,6 @@ def index():
     return render_template('index.html')
 
 @app.route('/api/standardize_and_validate', methods=['POST'])
-def standardize_and_validate_mock():
-    data = request.json
-    input_address = data['address']
-    
-    # 获取输入地址的门牌号
-    address_number = input_address.split()[0]
-    
-    # 构建data文件夹的路径
-    data_dir = os.path.join(current_dir, 'data')
-    
-    # 遍历data文件夹中的所有json文件
-    for filename in os.listdir(data_dir):
-        if filename.startswith(f'address_validation_{address_number}') and filename.endswith('.json'):
-            file_path = os.path.join(data_dir, filename)
-            with open(file_path, 'r') as f:
-                mock_data = json.load(f)
-                return jsonify(mock_data)
-    
-    # 如果没有找到匹配的文件，返回空结果
-    return jsonify({
-        'standardizedAddress': '',
-        'lat': None,
-        'lon': None,
-        'confidenceScore': 0,
-        'summary': ['No matching address found'],
-        'parcelCentroid': None,
-        'parcelDetails': None,
-        'parcel_match': None
-    })
-
 def standardize_and_validate():
     data = request.json
     input_address = data['address']

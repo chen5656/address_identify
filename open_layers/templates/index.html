@@ -220,6 +220,7 @@
         let lastSamgeoApiResponse = null
 
         async function standardizeAndValidateAddress(address) {
+            
             const response = await fetch('http://127.0.0.1:5000/api/standardize_and_validate', {
                 method: 'POST',
                 headers: {
