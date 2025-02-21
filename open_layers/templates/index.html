@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Address Standardization and Validation</title>
+    <link rel="stylesheet" href="https://openlayers.org/en/v6.5.0/css/ol.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        #map {
+            width: 100%;
+            height: 400px;
+        }
+        #info {
+            margin-top: 10px;
+        }
+        .loading-overlay {
+        display: none;
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 10px 15px;
+        border-radius: 4px;
+        z-index: 1000;
+    }
+    </style>
+</head>
+<body>
+    <h1>Address Standardization and Validation</h1>
+    <form id="addressForm">
+        <label for="address">Enter Address:</label>
+        <input type="text" id="address" name="address">
+        <button type="submit">Submit</button>
+    </form>
+    <div id="info">
+        <p>Before Standardization: <span id="beforeAddress"></span></p>
+        <p>After Standardization: <span id="afterAddress"></span></p>
+        <p>Confidence Score: <span id="confidenceScore"></span></p>
+        <p>Summary: <span id="summary"></span></p>
+        <p>Parcel Details: <span id="parcelDetails"></span></p>
+    </div>
+    <div id="map" class="map"></div>
+    <div id="loadingOverlay" class="loading-overlay">
+        <i class="fas fa-spinner fa-spin"></i> Predicting buildings and trees...
+    </div>
+    <script src="https://openlayers.org/en/v6.5.0/build/ol.js"></script>
+    <script>
+        // Initialize the map
+        const map = new ol.Map({
+            target: 'map',
+            layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM()
+                })
+            ],
+            view: new ol.View({
+                center: [0, 0],
+                zoom: 2
+            })
+        });
+
+        const buildingSource = new ol.source.Vector();  
+        const treeSource = new ol.source.Vector();
+        const buildingLayer = addPolygonLayer(map, 'blue', buildingSource);
+        const treeLayer = addPolygonLayer(map, 'green', treeSource);
+
+        const parcelSource = new ol.source.Vector({
+            loader: function(extent, resolution, projection) {
+                const url = 'https://services9.arcgis.com/EZrEnhBIXzBZ042I/arcgis/rest/services/ParcleMap/FeatureServer/0/query?f=json&where=1=1&outFields=*&spatialRel=esriSpatialRelIntersects&geometry=' +
+                    encodeURIComponent('{"xmin":' + extent[0] + ',"ymin":' + extent[1] + ',"xmax":' + extent[2] + ',"ymax":' + extent[3] + ',"spatialReference":{"wkid":102100}}') +
+                    '&geometryType=esriGeometryEnvelope&inSR=102100&outSR=102100';
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        const features = new ol.format.EsriJSON().readFeatures(data);
+                        parcelSource.addFeatures(features);
+                    });
+            },
+            strategy: ol.loadingstrategy.bbox
+            });
+        const parcelLayer = new ol.layer.Vector({
+            source: parcelSource
+        });
+        map.addLayer(parcelLayer);
+
+        // Handle form submission
+        document.getElementById('addressForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            // Clear existing layers
+            buildingSource.clear();
+            treeSource.clear();
+
+            const address = document.getElementById('address').value;
+
+            // Standardize and validate the address
+            const result = await standardizeAndValidateAddress(address);
+
+            // Update the info section
+            document.getElementById('beforeAddress').textContent = address;
+            document.getElementById('afterAddress').textContent = result.standardizedAddress;
+            document.getElementById('confidenceScore').textContent = result.confidenceScore;
+            document.getElementById('summary').textContent = result.summary.join(', ');
+
+            // Display parcel details if available
+            if (result.parcelDetails) {
+                document.getElementById('parcelDetails').textContent = JSON.stringify(result.parcelDetails, null, 2);
+            } else {
+                document.getElementById('parcelDetails').textContent = 'No parcel details available.';
+            }
+
+            // Clear existing layers
+            map.getLayers().forEach(layer => {
+                if (layer instanceof ol.layer.Vector && layer !== parcelLayer) {
+                    map.removeLayer(layer);
+                }
+            });
+
+            // Add the address point to the map
+            let addressPoint;
+            if (result.lat && result.lon) {
+                addressPoint = new ol.Feature({
+                    geometry: new ol.geom.Point(ol.proj.fromLonLat([result.lon, result.lat]))
+                });
+            } else if (result.parcelCentroid) {
+                addressPoint = new ol.Feature({
+                    geometry: new ol.geom.Point(ol.proj.fromLonLat([result.parcelCentroid.lon, result.parcelCentroid.lat]))
+                });
+            }
+
+            if (addressPoint) {
+                addressPoint.setStyle(new ol.style.Style({
+                    image: new ol.style.Icon({
+                        src: 'https://openlayers.org/en/v6.5.0/examples/data/icon.png'
+                    })
+                }));
+                const vectorSource = new ol.source.Vector({
+                    features: [addressPoint]
+                });
+                const vectorLayer = new ol.layer.Vector({
+                    source: vectorSource
+                });
+                map.addLayer(vectorLayer);
+                map.getView().setCenter(ol.proj.fromLonLat([result.lon || result.parcelCentroid.lon, result.lat || result.parcelCentroid.lat]));
+                map.getView().setZoom(15);
+            }
+            
+            if (result.parcel_match) {                
+                // Show loading message
+                document.getElementById('loadingOverlay').style.display = 'block';
+                
+                try {
+                    const predict_results = await addBuildingAndTrees(result.parcel_match);
+                    console.log('Prediction results:', predict_results);
+                    const extents = predict_results.map(result =>displayGeojsonData(result));
+                    const allExtent = ol.extent.boundingExtent(extents);
+                    console.log('allExtent', allExtent);
+                    map.getView().fit(allExtent, {
+                        padding: [180, 180, 180, 180], // Add some padding around the features
+                        duration: 500
+                    });
+                } finally {
+                    // Hide loading message
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                }
+            }
+
+        });
+
+        function addPolygonLayer(map, color, source) {
+            const vectorLayer = new ol.layer.Vector({
+                source: source,
+                style: new ol.style.Style({
+                    fill: new ol.style.Fill({
+                        color: color
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: 'black',
+                            width: 4
+                    })
+                })
+            });
+            map.addLayer(vectorLayer);
+            return vectorLayer;
+        }       
+
+
+        function displayGeojsonData(result) {
+            const { value, geojson } = result;
+            console.log('displaying', value, geojson);
+            if (geojson) {
+                // Transform coordinates from WGS84 to Web Mercator
+                const features = new ol.format.GeoJSON({
+                    dataProjection: 'EPSG:4326',
+                    featureProjection: 'EPSG:3857'
+                }).readFeatures(geojson);
+                
+                const vectorSource = new ol.source.Vector({
+                    features: features
+                });
+                if (value === 'building') {
+                    buildingSource.addFeatures(features);
+                } else if (value === 'tree') {
+                    treeSource.addFeatures(features);
+                }
+                return vectorSource.getExtent();
+            }
+        }
+
+        const getBoundingBox = (geometry) => {
+            const olPolygon = new ol.geom.Polygon([geometry.coordinates[0]]);
+            const boundingBox = olPolygon.getExtent();
+            return boundingBox;
+        }
+
+        // add variables to save the last api responses
+        let lastAddressApiResponse = null;  
+        let lastSamgeoApiResponse = null
+
+        async function standardizeAndValidateAddress(address) {
+            const response = await fetch('http://127.0.0.1:5000/api/standardize_and_validate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ address })
+            });
+            const data = await response.json();
+            lastAddressApiResponse = data;
+            return data;
+        }
+
+        async function addBuildingAndTrees(geojson) {
+            console.log('geojson', geojson);
+            // Get geometry regardless of whether geojson is object or dictionary
+            let geometry;
+            if(geojson.features) {
+                geometry = geojson.features[0].geometry;
+            } else if(geojson['features']) {
+                geometry = geojson['features'][0]['geometry'];
+            } else {
+                console.log('invalid geojson format');
+                return [];
+            }
+            // TODO to check with real api.
+            
+            // Get bounding box of geojson
+            // geojson will be feature collection, we need to get the bounding box of the first feature
+            const boundingBox = getBoundingBox(geometry);
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+
+            const textPrompts = [{
+                value: "building"
+            }, {
+                value: "tree"
+            }];
+
+            try {
+                const promises = textPrompts.map((textPrompt) => {
+                    const requestBody = {
+                        "bounding_box": boundingBox,
+                        "text_prompt": textPrompt.value,
+                        "zoom_level": 22,
+                        "box_threshold": 0.25,
+                        "text_threshold": 0.25,
+                    };
+                    console.log('requestBody', requestBody);
+                    return fetch("http://localhost:8001/api/v1/predict", {
+                        method: "POST",
+                        headers: myHeaders,
+                        body: JSON.stringify(requestBody),
+                        redirect: "follow"
+                    }).then(response => {
+                        if (!response.ok) {
+                            throw new Error("Network response was not ok");
+                        }
+                        return response.json();
+                    }).then(data => ({
+                        ...textPrompt,
+                        geojson: data
+                    }));
+                });
+
+                // Wait for all promises to resolve
+                const results = await Promise.all(promises);
+                lastSamgeoApiResponse = results;
+                return results;
+
+            } catch (error) {
+                console.error("Error in addBuildingAndTrees:", error);
+                lastSamgeoApiResponse = []
+                return [];
+            }
+        }        
+        
+        // Add this function after the existing functions
+        function addDownloadButtons() {
+            // Create container for buttons
+            const buttonContainer = document.createElement('div');
+            buttonContainer.style.marginTop = '10px';
+            
+            // Create address validation download button
+            const addressButton = document.createElement('button');
+            addressButton.textContent = 'Download Address Validation Data';
+            addressButton.style.marginRight = '10px';
+            
+            // 修改 address validation download button 的点击事件
+            addressButton.addEventListener('click', function() {
+                const beforeAddress = document.getElementById('beforeAddress').textContent;
+                
+                // 使用完整的 API 响应数据
+                const blob = new Blob([JSON.stringify(lastAddressApiResponse, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `address_validation_${beforeAddress}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+            
+            // Create buildings and trees download button
+            const buildingsTreesButton = document.createElement('button');
+            buildingsTreesButton.textContent = 'Download Buildings and Trees Data';
+            buildingsTreesButton.addEventListener('click', async function() {
+                const beforeAddress = document.getElementById('beforeAddress').textContent;
+                
+                const blob = new Blob([JSON.stringify(lastSamgeoApiResponse, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `address_validation_${beforeAddress}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+            
+            // Add buttons to container
+            buttonContainer.appendChild(addressButton);
+            buttonContainer.appendChild(buildingsTreesButton);
+            
+            // Add container after the info div
+            const infoDiv = document.getElementById('info');
+            infoDiv.parentNode.insertBefore(buttonContainer, infoDiv.nextSibling);
+        }
+        
+        // Call the function to add the buttons
+        addDownloadButtons();
+        
+    </script>
+</body>
+</html>

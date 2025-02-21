@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: ./segment_geospatial_api
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8001"
+    environment:
+      - PYTHONPATH=/app
+
+  web:
+    build:
+      context: ./segment_geospatial_frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./segment_geospatial_frontend:/app
+      - /app/node_modules
+    command: npm start
+    environment:
+      - REACT_APP_API_URL=http://api:8001
+    depends_on:
+      - api
