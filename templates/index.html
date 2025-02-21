@@ -146,6 +146,8 @@
             if (result.parcel_match) {
                 // Show loading message
                 document.getElementById('loadingOverlay').style.display = 'block';
+                document.getElementById('address').disabled = true;
+                document.querySelector('#addressForm button').disabled = true;
 
                 try {
                     const predict_results = await addBuildingAndTrees(result.parcel_match);
@@ -155,9 +157,10 @@
                 } finally {
                     // Hide loading message
                     document.getElementById('loadingOverlay').style.display = 'none';
+                    document.getElementById('address').disabled = false;
+                    document.querySelector('#addressForm button').disabled = false;
                 }
             }
-
         });
 
         function getPolygonLayer(color, source) {
