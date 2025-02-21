@@ -222,9 +222,13 @@
             myHeaders.append("Content-Type", "application/json");
 
             const textPrompts = [{
-                value: "building"
+                value: "buildings",
+                box_threshold: 0.4,
+                text_threshold: 0.25
             }, {
-                value: "tree"
+                value: "tree",
+                box_threshold: 0.25,
+                text_threshold: 0.25
             }];
 
             try {
@@ -233,8 +237,8 @@
                         "bounding_box": boundingBox,
                         "text_prompt": textPrompt.value,
                         "zoom_level": 22,
-                        "box_threshold": 0.25,
-                        "text_threshold": 0.25,
+                        "box_threshold": textPrompt.box_threshold,
+                        "text_threshold": textPrompt.text_threshold,
                     };
                     console.log('requestBody', requestBody);
                     return fetch("http://localhost:8001/api/v1/predict", {
