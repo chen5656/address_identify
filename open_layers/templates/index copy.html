@@ -46,7 +46,6 @@
         <i class="fas fa-spinner fa-spin"></i> Predicting buildings and trees...
     </div>
     <script src="https://openlayers.org/en/v6.5.0/build/ol.js"></script>
-    <script src="index.js"></script>
     <script>
         // Initialize the map
         const map = new ol.Map({
@@ -62,6 +61,10 @@
             })
         });
 
+        const buildingSource = new ol.source.Vector();  
+        const treeSource = new ol.source.Vector();
+        const buildingLayer = addPolygonLayer(map, 'blue', buildingSource);
+        const treeLayer = addPolygonLayer(map, 'green', treeSource);
 
         const parcelSource = new ol.source.Vector({
             loader: function(extent, resolution, projection) {
@@ -85,6 +88,10 @@
         // Handle form submission
         document.getElementById('addressForm').addEventListener('submit', async function (event) {
             event.preventDefault();
+
+            // Clear existing layers
+            buildingSource.clear();
+            treeSource.clear();
 
             const address = document.getElementById('address').value;
 
@@ -137,7 +144,7 @@
                 });
                 map.addLayer(vectorLayer);
                 map.getView().setCenter(ol.proj.fromLonLat([result.lon || result.parcelCentroid.lon, result.lat || result.parcelCentroid.lat]));
-                map.getView().setZoom(18);
+                map.getView().setZoom(15);
             }
             
             if (result.parcel_match) {                
@@ -147,8 +154,13 @@
                 try {
                     const predict_results = await addBuildingAndTrees(result.parcel_match);
                     console.log('Prediction results:', predict_results);
-                    const extents = predict_results.map(result =>displayGeojsonData(result)).filter(extent => extent);
-
+                    const extents = predict_results.map(result =>displayGeojsonData(result));
+                    const allExtent = ol.extent.boundingExtent(extents);
+                    console.log('allExtent', allExtent);
+                    map.getView().fit(allExtent, {
+                        padding: [180, 180, 180, 180], // Add some padding around the features
+                        duration: 500
+                    });
                 } finally {
                     // Hide loading message
                     document.getElementById('loadingOverlay').style.display = 'none';
@@ -157,40 +169,43 @@
 
         });
 
-        function getPolygonLayer(color, source) {
+        function addPolygonLayer(map, color, source) {
             const vectorLayer = new ol.layer.Vector({
-                title: 'Polygon Layer',
                 source: source,
-                opacity:0.5,
                 style: new ol.style.Style({
                     fill: new ol.style.Fill({
                         color: color
                     }),
                     stroke: new ol.style.Stroke({
                         color: 'black',
-                        width: 4
+                            width: 4
                     })
                 })
             });
+            map.addLayer(vectorLayer);
             return vectorLayer;
         }       
 
 
         function displayGeojsonData(result) {
             const { value, geojson } = result;
+            console.log('displaying', value, geojson);
             if (geojson) {
                 // Transform coordinates from WGS84 to Web Mercator
                 const features = new ol.format.GeoJSON({
                     dataProjection: 'EPSG:4326',
                     featureProjection: 'EPSG:3857'
                 }).readFeatures(geojson);
-
+                
                 const vectorSource = new ol.source.Vector({
                     features: features
                 });
-                const color = value === 'tree' ? 'green' : 'yellow';
-                const vectorLayer = getPolygonLayer(color, vectorSource);
-                map.addLayer(vectorLayer);
+                if (value === 'building') {
+                    buildingSource.addFeatures(features);
+                } else if (value === 'tree') {
+                    treeSource.addFeatures(features);
+                }
+                return vectorSource.getExtent();
             }
         }
 
@@ -200,6 +215,157 @@
             return boundingBox;
         }
 
+        // add variables to save the last api responses
+        let lastAddressApiResponse = null;  
+        let lastSamgeoApiResponse = null
+
+        async function standardizeAndValidateAddress(address) {
+            return {
+  "confidenceScore": 0.7999999999999999,
+  "lat": 43.04680339999999,
+  "lon": -76.1479982,
+  "parcelCentroid": null,
+  "parcelDetails": null,
+  "parcel_match": {
+    "features": [
+      {
+        "geometry": {
+          "coordinates": [
+            [
+              [
+                -76.1476195211959,
+                43.046335921459
+              ],
+              [
+                -76.1486970617787,
+                43.0463450416646
+              ],
+              [
+                -76.1486889873379,
+                43.0469411544697
+              ],
+              [
+                -76.1476106886688,
+                43.0469319510482
+              ],
+              [
+                -76.1476195211959,
+                43.046335921459
+              ]
+            ]
+          ],
+          "type": "Polygon"
+        },
+        "id": "37028",
+        "properties": {
+          "ACRES": 1.41,
+          "ACRES_1": 1.41,
+          "ADDRESSNAM": "Montgomery St To State St",
+          "ADDRESSNUM": "401",
+          "Add1": "C/O ONON CTY FACILITIES M",
+          "Add2": "ROOM  40",
+          "Add3": "421 MONTGOMERY ST",
+          "Add4": "SYRACUSE  NY",
+          "Amount_Del": 0,
+          "AssessedLa": 932400,
+          "AssessedVa": 6520000,
+          "Assessment": 1,
+          "Bankruptcy": " ",
+          "BlockLevel": "400 MONTGOMERY ST",
+          "Census": 32,
+          "CommonCoun": 4,
+          "CountyLeg": 8,
+          "DEEDBOOK": " ",
+          "DEEDPAGE": " ",
+          "DEPTH": 286.62,
+          "DEPTH_1": 286.62,
+          "DOCE_Area": "10",
+          "DVDATE": 0,
+          "EASTGRID": 616234,
+          "FID": 37029,
+          "FRONTFEET": 214.5,
+          "FRONTFEE_1": 214.5,
+          "FullAddres": "401 MONTGOMERY ST TO STATE ST",
+          "IPSConditi": " ",
+          "IPSVacant": " ",
+          "LUCODE": "652",
+          "Label": " ",
+          "LandUse": "Community Services",
+          "Latitude": 1110371.4257,
+          "Latitude_1": 43.0466,
+          "Longitud_1": -76.1482,
+          "Longitude": 936533.805005,
+          "NARRATIVE1": "Lot Nl 1&2 Bl126",
+          "NARRATIVE2": " ",
+          "NARRATIVE3": "214.50x286.62x214.50x282.",
+          "NEWPROPCLA": "652",
+          "NORTHGRID": 1110330,
+          "NRSA": " ",
+          "Neighborho": "Downtown",
+          "OBJECTID": 375288,
+          "Occupancy": "Occupied Community",
+          "OpenCodeVi": " ",
+          "OverdueWat": 0,
+          "Owner": "COUNTY OF ONONDAGA",
+          "Owner2": " ",
+          "PNUMBR": "1562100900",
+          "PRINTKEY": "102.-10-01.0",
+          "Phase": " ",
+          "Redemption": 0,
+          "SBL": "102.-10-01.0",
+          "SENIOR_EXE": " ",
+          "STAR": " ",
+          "STARC": 0,
+          "STARS": 0,
+          "Sec_Block": "3115001020000010",
+          "Seizable": " ",
+          "Shape__Area": 10896.37109375,
+          "Shape__Length": 421.607061179638,
+          "StName": "MONTGOMERY ST TO STATE ST",
+          "StNum": "401",
+          "TAX_ID": "31150010200000100010000000",
+          "TAX_ID_1": "31150010200000100010000000",
+          "TNT": "Downtown",
+          "TaxBilling": "ROOM 40 421 MONTGOMERY ST SYRACUSE NY 13202",
+          "TaxTrust": " ",
+          "Units": 0,
+          "VET_EXEMPT": " ",
+          "VacantBuil": "N",
+          "Ward": 15,
+          "WaterServi": "A",
+          "XCoord": 936533.805005,
+          "YCoord": 1110371.4257,
+          "YEARBLT": 0,
+          "YearBuilt": "1900",
+          "ZIP": "13202",
+          "ZIP2": " ",
+          "Zoning": "CBD-OSR",
+          "n_OpenViol": " "
+        },
+        "type": "Feature"
+      }
+    ],
+    "type": "FeatureCollection"
+  },
+  "standardizedAddress": "401 Montgomery st, Syracuse, NY 13202",
+  "summary": [
+    "Base Score for Location Match: 0.5",
+    "Street Number Match: 0.2",
+    "ZIP Code Match: 0.1"
+  ]
+}
+            
+            const response = await fetch('http://127.0.0.1:5000/api/standardize_and_validate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ address })
+            });
+            const data = await response.json();
+            lastAddressApiResponse = data;
+            return data;
+        }
 
         async function addBuildingAndTrees(geojson) {
             console.log('geojson', geojson);
@@ -264,6 +430,62 @@
                 return [];
             }
         }        
+        
+        // Add this function after the existing functions
+        function addDownloadButtons() {
+            // Create container for buttons
+            const buttonContainer = document.createElement('div');
+            buttonContainer.style.marginTop = '10px';
+            
+            // Create address validation download button
+            const addressButton = document.createElement('button');
+            addressButton.textContent = 'Download Address Validation Data';
+            addressButton.style.marginRight = '10px';
+            
+            // 修改 address validation download button 的点击事件
+            addressButton.addEventListener('click', function() {
+                const beforeAddress = document.getElementById('beforeAddress').textContent;
+                
+                // 使用完整的 API 响应数据
+                const blob = new Blob([JSON.stringify(lastAddressApiResponse, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `address_validation_${beforeAddress}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+            
+            // Create buildings and trees download button
+            const buildingsTreesButton = document.createElement('button');
+            buildingsTreesButton.textContent = 'Download Buildings and Trees Data';
+            buildingsTreesButton.addEventListener('click', async function() {
+                const beforeAddress = document.getElementById('beforeAddress').textContent;
+                
+                const blob = new Blob([JSON.stringify(lastSamgeoApiResponse, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `address_validation_${beforeAddress}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+            
+            // Add buttons to container
+            buttonContainer.appendChild(addressButton);
+            buttonContainer.appendChild(buildingsTreesButton);
+            
+            // Add container after the info div
+            const infoDiv = document.getElementById('info');
+            infoDiv.parentNode.insertBefore(buttonContainer, infoDiv.nextSibling);
+        }
+        
+        // Call the function to add the buttons
+        addDownloadButtons();
         
     </script>
 </body>

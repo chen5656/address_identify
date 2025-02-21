@@ -178,7 +178,15 @@ class SegmentationPredictor:
             source="Satellite",
             overwrite=True
         )
-
+        
+    @staticmethod
+    def save_geojson(data, name):
+        """Save GeoJSON data to a file with timestamp"""
+        filename = f"{name}.geojson"
+                
+        with open(filename, 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+ 
     async def make_prediction(
         self, 
         *, 
@@ -308,6 +316,7 @@ class SegmentationPredictor:
                 # Transform coordinates to lat/long
                 logger.info("Transforming coordinates to WGS84...")
                 transformed_geojson = self.transform_coordinates(geojson_content)
+                self.save_geojson(transformed_geojson, f"transformed_{request_id}")
                 geojson_count = len(transformed_geojson.get('features', []))
                 
                 logger.success(f"Successfully found {geojson_count} features")
