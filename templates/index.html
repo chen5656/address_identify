@@ -205,7 +205,7 @@
         }
 
         async function standardizeAndValidateAddress(address) {
-            const response = await fetch('http://127.0.0.1:5000/api/standardize_and_validate', {
+        const response = await fetch('http://127.0.0.1:5000/api/standardize_and_validate', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -228,8 +228,6 @@
                 console.log('invalid geojson format');
                 return [];
             }
-            // TODO to check with real api.
-
             // Get bounding box of geojson
             // geojson will be feature collection, we need to get the bounding box of the first feature
             const boundingBox = getBoundingBox(geometry);
@@ -247,39 +245,39 @@
             }];
 
             try {
-                const promises = textPrompts.map((textPrompt) => {
-                    const requestBody = {
-                        "bounding_box": boundingBox,
-                        "text_prompt": textPrompt.value,
-                        "zoom_level": 22,
-                        "box_threshold": textPrompt.box_threshold,
-                        "text_threshold": textPrompt.text_threshold,
-                    };
-                    console.log('requestBody', requestBody);
-                    return fetch("http://localhost:8001/api/v1/predict", {
-                        method: "POST",
-                        headers: myHeaders,
-                        body: JSON.stringify(requestBody),
-                        redirect: "follow"
-                    }).then(response => {
-                        if (!response.ok) {
-                            throw new Error("Network response was not ok");
-                        }
-                        return response.json();
-                    }).then(data => ({
-                        ...textPrompt,
-                        geojson: data
-                    }));
+                const requestBody = {
+                    "bounding_box": boundingBox,
+                    "text_prompts": textPrompts.map(prompt => ({
+                        value: prompt.value,
+                        box_threshold: prompt.box_threshold,
+                        text_threshold: prompt.text_threshold
+                    })),
+                    "zoom_level": 21
+                };
+                
+                console.log('requestBody', requestBody);
+                
+                const response = await fetch("http://localhost:8001/api/v1/predict", {
+                    method: "POST",
+                    headers: myHeaders,
+                    body: JSON.stringify(requestBody),
+                    redirect: "follow"
                 });
 
-                // Wait for all promises to resolve
-                const results = await Promise.all(promises);
-                lastSamgeoApiResponse = results;
-                return results;
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+
+                const data = await response.json();
+                
+                // Combine the original prompt information with the response data
+                return textPrompts.map((prompt, index) => ({
+                    ...prompt,
+                    geojson: data[index] // Assuming the backend returns an array of results in the same order
+                }));
 
             } catch (error) {
                 console.error("Error in addBuildingAndTrees:", error);
-                lastSamgeoApiResponse = []
                 return [];
             }
         }
