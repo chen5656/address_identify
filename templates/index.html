@@ -183,7 +183,7 @@
 
 
         function displayGeojsonData(result) {
-            const { value, geojson } = result;
+            const { prompt, geojson } = result;
             if (geojson) {
                 // Transform coordinates from WGS84 to Web Mercator
                 const features = new ol.format.GeoJSON({
@@ -195,7 +195,7 @@
                     features: features
                 });
                 // color for tree and building
-                const color = value === 'tree' ? 'green' : 'yellow';
+                const color = prompt.value === 'tree' ? 'green' : 'yellow';
                 const vectorLayer = getPolygonLayer(color, vectorSource);
                 map.addLayer(vectorLayer);
             }
@@ -207,8 +207,8 @@
             return boundingBox;
         }
 
-        async function standardizeAndValidateAddress(address) {
-        const response = await fetch('http://127.0.0.1:5000/api/standardize_and_validate', {
+        async function standardizeAndValidateAddress(address) {            
+            const response = await fetch('http://127.0.0.1:5000/api/standardize_and_validate', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -271,13 +271,7 @@
                     throw new Error("Network response was not ok");
                 }
 
-                const data = await response.json();
-                
-                // Combine the original prompt information with the response data
-                return textPrompts.map((prompt, index) => ({
-                    ...prompt,
-                    geojson: data[index] // Assuming the backend returns an array of results in the same order
-                }));
+                return await response.json();
 
             } catch (error) {
                 console.error("Error in addBuildingAndTrees:", error);
