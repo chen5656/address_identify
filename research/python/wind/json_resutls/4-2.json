@@ -1,0 +1,255 @@
+{
+    "objectId": 0,
+    "name": "Pixel",
+    "value": "116.346",
+    "location": {
+        "x": -10686671.116154263,
+        "y": 4439106.7872505849,
+        "spatialReference": {
+            "wkid": 102100,
+            "latestWkid": 3857
+        }
+    },
+    "properties": {
+        "Values": [
+            "116.346",
+            "93.6245",
+            "121.003",
+            "88.1616",
+            "82.7176",
+            "75.3428",
+            "109.266",
+            "102.376",
+            "150.125",
+            "169.167",
+            "130.94"
+        ]
+    },
+    "catalogItems": {
+        "objectIdFieldName": "OBJECTID",
+        "features": [
+            {
+                "attributes": {
+                    "OBJECTID": 6,
+                    "Name": "w2022_mri1700",
+                    "MinPS": 0,
+                    "MaxPS": 39996,
+                    "LowPS": 999.89999999999998,
+                    "HighPS": 3999.5999999999999,
+                    "Category": 1,
+                    "Tag": "Dataset",
+                    "GroupName": "",
+                    "ProductName": "",
+                    "CenterX": -13095771.107999999,
+                    "CenterY": 6766372.4090000028,
+                    "ZOrder": null,
+                    "Shape_Length": 42703729.200000003,
+                    "Shape_Area": 112671627293941.64
+                }
+            },
+            {
+                "attributes": {
+                    "OBJECTID": 2,
+                    "Name": "w2022_mri100",
+                    "MinPS": 0,
+                    "MaxPS": 39995.999999999993,
+                    "LowPS": 999.89999999999986,
+                    "HighPS": 3999.5999999999995,
+                    "Category": 1,
+                    "Tag": "Dataset",
+                    "GroupName": "",
+                    "ProductName": "",
+                    "CenterX": -13095775.0407,
+                    "CenterY": 6754084.7707999991,
+                    "ZOrder": null,
+                    "Shape_Length": 42777721.799999997,
+                    "Shape_Area": 113108842837714.69
+                }
+            },
+            {
+                "attributes": {
+                    "OBJECTID": 9,
+                    "Name": "w2022_mri3000",
+                    "MinPS": 0,
+                    "MaxPS": 39996.000000000007,
+                    "LowPS": 999.9000000000002,
+                    "HighPS": 3999.6000000000008,
+                    "Category": 1,
+                    "Tag": "Dataset",
+                    "GroupName": "",
+                    "ProductName": "",
+                    "CenterX": -13095771.107999999,
+                    "CenterY": 6735891.4134,
+                    "ZOrder": null,
+                    "Shape_Length": 42581741.399999991,
+                    "Shape_Area": 111950812478532.03
+                }
+            },
+            {
+                "attributes": {
+                    "OBJECTID": 10,
+                    "Name": "w2022_mri50",
+                    "MinPS": 0,
+                    "MaxPS": 39996,
+                    "LowPS": 999.90000000000009,
+                    "HighPS": 3999.6000000000004,
+                    "Category": 1,
+                    "Tag": "Dataset",
+                    "GroupName": "",
+                    "ProductName": "",
+                    "CenterX": -13095775.0176,
+                    "CenterY": 6726162.8798000021,
+                    "ZOrder": null,
+                    "Shape_Length": 42665733.000000007,
+                    "Shape_Area": 112447111203896.08
+                }
+            },
+            {
+                "attributes": {
+                    "OBJECTID": 7,
+                    "Name": "w2022_mri25",
+                    "MinPS": 0,
+                    "MaxPS": 39996,
+                    "LowPS": 999.89999999999998,
+                    "HighPS": 3999.5999999999999,
+                    "Category": 1,
+                    "Tag": "Dataset",
+                    "GroupName": "",
+                    "ProductName": "",
+                    "CenterX": -13095774.984699998,
+                    "CenterY": 6695471.0822000019,
+                    "ZOrder": null,
+                    "Shape_Length": 42541745.400000006,
+                    "Shape_Area": 111714479752168.28
+                }
+            },
+            {
+                "attributes": {
+                    "OBJECTID": 1,
+                    "Name": "w2022_mri10",
+                    "MinPS": 0,
+                    "MaxPS": 39995.999999999978,
+                    "LowPS": 999.89999999999952,
+                    "HighPS": 3999.5999999999981,
+                    "Category": 1,
+                    "Tag": "Dataset",
+                    "GroupName": "",
+                    "ProductName": "",
+                    "CenterX": -13095668.562399998,
+                    "CenterY": 6678409.0105000008,
+                    "ZOrder": null,
+                    "Shape_Length": 42471752.400000006,
+                    "Shape_Area": 111300897481031.67
+                }
+            },
+            {
+                "attributes": {
+                    "OBJECTID": 11,
+                    "Name": "w2022_mri700",
+                    "MinPS": 0,
+                    "MaxPS": 39996,
+                    "LowPS": 999.90000000000009,
+                    "HighPS": 3999.6000000000004,
+                    "Category": 1,
+                    "Tag": "Dataset",
+                    "GroupName": "",
+                    "ProductName": "",
+                    "CenterX": -12450835.607999999,
+                    "CenterY": 6781375.2014000006,
+                    "ZOrder": null,
+                    "Shape_Length": 45345465,
+                    "Shape_Area": 125375615115206.92
+                }
+            },
+            {
+                "attributes": {
+                    "OBJECTID": 8,
+                    "Name": "w2022_mri300",
+                    "MinPS": 0,
+                    "MaxPS": 39996,
+                    "LowPS": 999.90000000000009,
+                    "HighPS": 3999.6000000000004,
+                    "Category": 1,
+                    "Tag": "Dataset",
+                    "GroupName": "",
+                    "ProductName": "",
+                    "CenterX": -12450835.607999999,
+                    "CenterY": 6764464.223100001,
+                    "ZOrder": null,
+                    "Shape_Length": 45275472,
+                    "Shape_Area": 124916891873618.81
+                }
+            },
+            {
+                "attributes": {
+                    "OBJECTID": 4,
+                    "Name": "w2022_mri100000",
+                    "MinPS": 0,
+                    "MaxPS": 19994.537191505045,
+                    "LowPS": 999.72685957525232,
+                    "HighPS": 1999.4537191505046,
+                    "Category": 1,
+                    "Tag": "Dataset",
+                    "GroupName": "",
+                    "ProductName": "",
+                    "CenterX": -10802268.0886,
+                    "CenterY": 4532838.3880000003,
+                    "ZOrder": null,
+                    "Shape_Length": 20980002.590799995,
+                    "Shape_Area": 24988288444500.559
+                }
+            },
+            {
+                "attributes": {
+                    "OBJECTID": 5,
+                    "Name": "w2022_mri1000000",
+                    "MinPS": 0,
+                    "MaxPS": 19994.491861976112,
+                    "LowPS": 999.7245930988056,
+                    "HighPS": 1999.4491861976112,
+                    "Category": 1,
+                    "Tag": "Dataset",
+                    "GroupName": "",
+                    "ProductName": "",
+                    "CenterX": -10790713.7929,
+                    "CenterY": 4495827.6241999995,
+                    "ZOrder": null,
+                    "Shape_Length": 20648002.516800005,
+                    "Shape_Area": 24290026093283.172
+                }
+            },
+            {
+                "attributes": {
+                    "OBJECTID": 3,
+                    "Name": "w2022_mri10000",
+                    "MinPS": 0,
+                    "MaxPS": 39995.05866840652,
+                    "LowPS": 999.87646671016296,
+                    "HighPS": 3999.5058668406518,
+                    "Category": 1,
+                    "Tag": "Dataset",
+                    "GroupName": "",
+                    "ProductName": "",
+                    "CenterX": -1559409.5953000002,
+                    "CenterY": 2386465.9174500015,
+                    "ZOrder": null,
+                    "Shape_Length": 87510012.081800014,
+                    "Shape_Area": 287453099469954.63
+                }
+            }
+        ]
+    },
+    "catalogItemVisibilities": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+    ]
+}

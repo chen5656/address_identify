@@ -1,0 +1,42 @@
+{
+  "displayFieldName": "STATE_NAME",
+  "fieldAliases": {
+    "OBJECTID": "OBJECTID",
+    "STATE_NAME": "STATE_NAME",
+    "Shape_Length": "Shape_Length",
+    "Shape_Area": "Shape_Area"
+  },
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "OBJECTID"
+    },
+    {
+      "name": "STATE_NAME",
+      "type": "esriFieldTypeString",
+      "alias": "STATE_NAME",
+      "length": 35
+    },
+    {
+      "name": "Shape_Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape_Length"
+    },
+    {
+      "name": "Shape_Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape_Area"
+    }
+  ],
+  "features": [
+    {
+      "attributes": {
+        "OBJECTID": 1,
+        "STATE_NAME": "Hawaii",
+        "Shape_Length": 2322122.9128483958,
+        "Shape_Area": 226106551018.8596
+      }
+    }
+  ]
+}

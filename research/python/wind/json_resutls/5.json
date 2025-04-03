@@ -1,0 +1,102 @@
+{
+  "displayFieldName": "Name",
+  "fieldAliases": {
+    "OBJECTID": "OBJECTID",
+    "Name": "Name",
+    "FID_": "FID_",
+    "Entity": "Entity",
+    "Layer": "Layer",
+    "Color": "Color",
+    "Linetype": "Linetype",
+    "Elevation": "Elevation",
+    "LineWt": "LineWt",
+    "RefName": "RefName",
+    "Shape_Length": "Shape_Length",
+    "Shape_Area": "Shape_Area"
+  },
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "OBJECTID"
+    },
+    {
+      "name": "Name",
+      "type": "esriFieldTypeString",
+      "alias": "Name",
+      "length": 60
+    },
+    {
+      "name": "FID_",
+      "type": "esriFieldTypeInteger",
+      "alias": "FID_"
+    },
+    {
+      "name": "Entity",
+      "type": "esriFieldTypeString",
+      "alias": "Entity",
+      "length": 16
+    },
+    {
+      "name": "Layer",
+      "type": "esriFieldTypeString",
+      "alias": "Layer",
+      "length": 254
+    },
+    {
+      "name": "Color",
+      "type": "esriFieldTypeInteger",
+      "alias": "Color"
+    },
+    {
+      "name": "Linetype",
+      "type": "esriFieldTypeString",
+      "alias": "Linetype",
+      "length": 254
+    },
+    {
+      "name": "Elevation",
+      "type": "esriFieldTypeDouble",
+      "alias": "Elevation"
+    },
+    {
+      "name": "LineWt",
+      "type": "esriFieldTypeInteger",
+      "alias": "LineWt"
+    },
+    {
+      "name": "RefName",
+      "type": "esriFieldTypeString",
+      "alias": "RefName",
+      "length": 254
+    },
+    {
+      "name": "Shape_Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape_Length"
+    },
+    {
+      "name": "Shape_Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape_Area"
+    }
+  ],
+  "features": [
+    {
+      "attributes": {
+        "OBJECTID": 30,
+        "Name": " ",
+        "FID_": null,
+        "Entity": null,
+        "Layer": null,
+        "Color": null,
+        "Linetype": null,
+        "Elevation": null,
+        "LineWt": null,
+        "RefName": null,
+        "Shape_Length": 466426.9725736251,
+        "Shape_Area": 11155606939.360962
+      }
+    }
+  ]
+}

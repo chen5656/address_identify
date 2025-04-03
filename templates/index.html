@@ -1,36 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Address Standardization and Validation</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- OpenLayers CSS -->
     <link rel="stylesheet" href="https://openlayers.org/en/v6.5.0/css/ol.css" type="text/css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/templates/styles.css">
+    <link rel="stylesheet" href="/templates/style.css">
     <style>
         #map {
             width: 100%;
             height: 400px;
         }
-
         #info {
             margin-top: 10px;
         }
 
-        .loading-overlay {
-            display: none;
-            position: fixed;
+        #femaChart {
+            width: 100%;
+            height: 400px;
+        }
+        #legend {
+            position: absolute;
             top: 10px;
             right: 10px;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 10px 15px;
-            border-radius: 4px;
+            background: white;
+            padding: 10px;
+            border: 1px solid #ccc;
             z-index: 1000;
+        }
+        .criteria-container {
+            visibility: none;
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 350px;
+            height: auto;
+            max-height: 800vh;
+            overflow-x: auto;
+            overflow-y: auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+        .criteria-container__content {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            overflow: auto;
+        }
+        .margin--small {
+            margin: 8px 0;
+        }
+        .criteria-container__section {
+            margin-bottom: 5px;
+        }
+        .input-field {
+            margin-bottom: 15px;
+        }
+        .input-field label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #666;
+        }
+        .input-field input,
+        .input-field select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .risk-level-selected-placeholder {
+            font-weight: bold;
+            color: #333;
+        }
+        .inline-block {
+            display: inline-block;
+            margin-right: 15px;
+        }
+        .fill--50p__wide {
+            width: 50%;
+        }
+        .with-gap {
+            margin-right: 8px;
+        }
+        .filled-in {
+            margin-right: 8px;
+        }
+        .waves-effect {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #2196f3;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .waves-effect:hover {
+            background-color: #1976d2;
+        }
+        .btn-large {
+            font-size: 1.2em;
+            padding: 12px 25px;
+        }
+        .blue.darken-4 {
+            background-color: #0d47a1;
+        }
+        .fill__wide {
+            width: 100%;
+        }
+        .flex {
+            display: flex;
+        }
+        .flex-row {
+            flex-direction: row;
+        }
+        .flex-wrap {
+            flex-wrap: wrap;
+        }
+        .padding--small {
+            padding: 8px;
+        }
+        .button {
+            cursor: pointer;
         }
     </style>
 </head>
-
 <body>
     <h1>Address Standardization and Validation</h1>
     <form id="addressForm">
@@ -44,242 +150,190 @@
         <p>Confidence Score: <span id="confidenceScore"></span></p>
         <p>Summary: <span id="summary"></span></p>
         <p>Parcel Details: <span id="parcelDetails"></span></p>
+<!--        <p>pedestrianEntrances: <span id="ppedestrianEntrances"></span></p>-->
+<!--        <p>femaData: <span id="femaData"></span></p>-->
     </div>
     <div id="map" class="map"></div>
-    <div id="loadingOverlay" class="loading-overlay">
-        <i class="fas fa-spinner fa-spin"></i> Predicting buildings and trees...
+    <div id="legend">
+        <h3>Legend</h3>
+        <div>
+            <input type="checkbox" id="layer1" checked>
+            <label for="layer1">Layer 1</label>
+        </div>
+        <div>
+            <input type="checkbox" id="layer2" checked>
+            <label for="layer2">Layer 2</label>
+        </div>
+        <!-- Add more layers as needed -->
     </div>
+    <div id="criteria" class="criteria-container visable">
+        <div>
+            <div class="criteria-container">
+                <!-- <h3 class="criteria-container__title">-->
+                <!-- <img src="static/app/images/circle_2.svg" alt="">-->
+                <!--<!– <span>Requested Data</span>–>-->
+                <!-- </h3>-->
+            </div>
+        </div>
+        <div class="criteria-container__content white margin--small">
+            <div class="selection-container">
+                <div class="criteria-container__section risk-level-container col s6">
+                    <div class="input-field ">
+                        <div class="criteria-title-item">
+                            <img class="title-icon" src="static/app/images/sm_icon_standard_version.svg" alt="">
+                            <span>Standard Version</span>
+                            <img class="info-icon" src="static/app/images/icon_info.svg" alt="" title="Select the Standard you wish to use for this report. Users who are unsure which building code reference document and version govern their project type and location should contact their local building department.">
+                            <div class="risk-level-selector-container">
+                                <p class="risk-level-selected-placeholder">ASCE/SEI 7-22</p>
+                                <select id="standards-selector" class="standards-selector browser-default">
+                                    <option value="default" disabled="">Select Standard Version</option>
+                                    <option value="7-10">ASCE/SEI 7-10</option>
+                                    <option value="7-16">ASCE/SEI 7-16</option>
+                                    <option value="7-22">ASCE/SEI 7-22</option>
+                                    <option value="41-17">ASCE/SEI 41-17</option>
+                                    <option value="41-23">ASCE/SEI 41-23</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="criteria-container__section risk-level-container col s6">
+                    <div class="input-field">
+                        <div class="criteria-title-item">
+                            <img class="title-icon" src="static/app/images/sm_icon_risk_level.svg" alt="">
+                            <span>Risk Category</span>
+                            <img class="info-icon" src="static/app/images/icon_info.svg" alt="" title="Select your structure's Risk Category. Risk Category is a classification of buildings and other structures based on the risk to human life, health, and welfare associated with their damage or failure by nature of their occupancy or use. A building or structure shall be assigned to the highest applicable risk category. (Required field for all load types.)">
+                            <div class="risk-level-selector-container ">
+                                <p class="risk-level-selected-placeholder">II</p>
+                                <select id="risk-level-selector" class="risk-level-selector browser-default">
+                                    <option value="default" disabled="">Select Risk Category</option>
+                                    <option value="1">I</option>
+                                    <option value="2">II</option>
+                                    <option value="3">III</option>
+                                    <option value="4">IV</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="criteria-container__section risk-level-container col s6">
+                    <div class="input-field">
+                        <div class="criteria-title-item">
+                            <img class="title-icon" src="static/app/images/sm_icon_soil_class.svg" alt="">
+                            <span>Site Soil Class</span>
+                            <img class="info-icon" src="static/app/images/icon_info.svg" alt="" title="The site shall be classified as Site Class A, B,BC, C, CD, D, DE, E, or F in accordance with Chapter 20.11.4.2.1. Where the soil properties are not known in sufficient detail to determine the site class, risk-targeted maximum considered earthquake (MCER) spectral response accelerations shall be based on the most critical spectral response acceleration at each period of Site Class C, Site Class CD, and Site Class D, unless the Authority Having Jurisdiction determines, based on geotechnical data, that Site Class DE, E, or F soils are present at the site.">
+                            <div class="risk-level-selector-container">
+                                <p class="risk-level-selected-placeholder">Default</p>
+                                <select id="site-soil-class-selector" class="risk-level-selector browser-default">
+                                    <option value="disabled" disabled="">Select Soil Class</option>
+                                    <option value="0">Default</option>
+                                    <option value="1">A - Hard Rock</option>
+                                    <option value="2">B - Rock</option>
+                                    <option value="3">BC</option>
+                                    <option value="4">C - Very Dense Soil and Soft Rock</option>
+                                    <option value="5">CD</option>
+                                    <option value="6">D - Stiff Soil</option>
+                                    <option value="7">DE</option>
+                                    <option value="8">E - Soft Clay Soil</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+            <div class="criteria-container__section measurements-container">
+                <div class="criteria-title-item">
+                    <img class="title-icon" src="static/app/images/sm_icon_measurements.svg" alt="">
+                    <span>Measurements</span>
+                </div>
+                <p class="inline-block fill--50p__wide">
+                    <input type="radio" class="with-gap" name="group2" id="imperial" value="on" checked>
+                    <label for="imperial">Customary</label>
+                </p>
+                <p class="inline-block fill--50p__wide">
+                    <input type="radio" class="with-gap" name="group2" id="si" value="on">
+                    <label for="si">SI</label>
+                </p>
+            </div>
+            <div class="criteria-container__section">
+                <div class="criteria-title-item">
+                    <img class="title-icon" src="static/app/images/sm_icon_include.svg" alt="">
+                    <span>Load Types</span>
+                    <!-- <a class="select-all-include">Select all</a> -->
+                </div>
+                <div class="flex flex-row flex-wrap padding--small">
+                    <p class="fill--50p__wide">
+                        <input type="radio" class="with-gap" name="loadType" id="Wind" value="on">
+                        <label class="" for="Wind">Wind</label>
+                    </p>
+                    <p class="fill--50p__wide">
+                        <input type="radio" class="with-gap" name="loadType" id="Seismic" value="on">
+                        <label class="" for="Seismic">Seismic</label>
+                    </p>
+                    <p class="fill--50p__wide">
+                        <input type="radio" class="with-gap" name="loadType" id="Ice" value="on">
+                        <label class="" for="Ice">Ice</label>
+                    </p>
+                    <p class="fill--50p__wide">
+                        <input type="radio" class="with-gap" name="loadType" id="Snow" value="on">
+                        <label class="" for="Snow">Snow</label>
+                    </p>
+                    <p class="fill--50p__wide">
+                        <input type="radio" class="with-gap" name="loadType" id="Rain" value="on">
+                        <label class="" for="Rain">Rain</label>
+                    </p>
+                    <p class="fill--50p__wide">
+                        <input type="radio" class="with-gap" name="loadType" id="Flood" value="on">
+                        <label class="" for="Flood">Flood</label>
+                    </p>
+                    <p class="fill--50p__wide">
+                        <input type="radio" class="with-gap" name="loadType" id="Tsunami" value="on">
+                        <label class="" for="Tsunami">Tsunami</label>
+                    </p>
+                    <p class="fill--50p__wide">
+                        <input type="radio" class="with-gap" name="loadType" id="Tornado" value="on">
+                        <label class="" for="Tornado">Tornado</label>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div id="resultsButton" class="white padding--small margin--small button">
+            <a class="waves-effect waves-light btn-large blue darken-4 fill__wide" id="viewResultsButton">View Results</a>
+        </div>
+    </div>
+    <div id="femaChart"></div>
+    
+    <!-- 添加风速报告显示区域 -->
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Wind Load Report</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="windReport" class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    
+    <!-- jQuery (required for Bootstrap) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- OpenLayers JS -->
     <script src="https://openlayers.org/en/v6.5.0/build/ol.js"></script>
-    <script>
-        // Initialize the map
-        const map = new ol.Map({
-            target: 'map',
-            layers: [
-                new ol.layer.Tile({
-                    source: new ol.source.OSM()
-                })
-            ],
-            view: new ol.View({
-                center: [0, 0],
-                zoom: 2
-            })
-        });
-
-
-        const parcelSource = new ol.source.Vector({
-            loader: function (extent, resolution, projection) {
-                const url = 'https://services9.arcgis.com/EZrEnhBIXzBZ042I/arcgis/rest/services/ParcleMap/FeatureServer/0/query?f=json&where=1=1&outFields=*&spatialRel=esriSpatialRelIntersects&geometry=' +
-                    encodeURIComponent('{"xmin":' + extent[0] + ',"ymin":' + extent[1] + ',"xmax":' + extent[2] + ',"ymax":' + extent[3] + ',"spatialReference":{"wkid":102100}}') +
-                    '&geometryType=esriGeometryEnvelope&inSR=102100&outSR=102100';
-                fetch(url)
-                    .then(response => response.json())
-                    .then(data => {
-                        const features = new ol.format.EsriJSON().readFeatures(data);
-                        parcelSource.addFeatures(features);
-                    });
-            },
-            strategy: ol.loadingstrategy.bbox
-        });
-        const parcelLayer = new ol.layer.Vector({
-            source: parcelSource
-        });
-        map.addLayer(parcelLayer);
-
-        // Handle form submission
-        document.getElementById('addressForm').addEventListener('submit', async function (event) {
-            event.preventDefault();
-
-            const address = document.getElementById('address').value;
-
-            // Standardize and validate the address
-            const result = await standardizeAndValidateAddress(address);
-
-            // Update the info section
-            document.getElementById('beforeAddress').textContent = address;
-            document.getElementById('afterAddress').textContent = result.standardizedAddress;
-            document.getElementById('confidenceScore').textContent = result.confidenceScore;
-            document.getElementById('summary').textContent = result.summary.join(', ');
-
-            // Display parcel details if available
-            if (result.parcelDetails) {
-                document.getElementById('parcelDetails').textContent = JSON.stringify(result.parcelDetails, null, 2);
-            } else {
-                document.getElementById('parcelDetails').textContent = 'No parcel details available.';
-            }
-
-            // Clear existing layers
-            map.getLayers().forEach(layer => {
-                if (layer instanceof ol.layer.Vector && layer !== parcelLayer) {
-                    map.removeLayer(layer);
-                }
-            });
-
-            // Add the address point to the map
-            let addressPoint;
-            if (result.lat && result.lon) {
-                addressPoint = new ol.Feature({
-                    geometry: new ol.geom.Point(ol.proj.fromLonLat([result.lon, result.lat]))
-                });
-            } else if (result.parcelCentroid) {
-                addressPoint = new ol.Feature({
-                    geometry: new ol.geom.Point(ol.proj.fromLonLat([result.parcelCentroid.lon, result.parcelCentroid.lat]))
-                });
-            }
-
-            if (addressPoint) {
-                addressPoint.setStyle(new ol.style.Style({
-                    image: new ol.style.Icon({
-                        src: 'https://openlayers.org/en/v6.5.0/examples/data/icon.png'
-                    })
-                }));
-                const vectorSource = new ol.source.Vector({
-                    features: [addressPoint]
-                });
-                const vectorLayer = new ol.layer.Vector({
-                    source: vectorSource
-                });
-                map.addLayer(vectorLayer);
-                map.getView().setCenter(ol.proj.fromLonLat([result.lon || result.parcelCentroid.lon, result.lat || result.parcelCentroid.lat]));
-                map.getView().setZoom(18);
-            }
-
-            if (result.parcel_match) {
-                // Show loading message
-                document.getElementById('loadingOverlay').style.display = 'block';
-                document.getElementById('address').disabled = true;
-                document.querySelector('#addressForm button').disabled = true;
-
-                try {
-                    const predict_results = await addBuildingAndTrees(result.parcel_match);
-                    console.log('Prediction results:', predict_results);
-                    const extents = predict_results.map(result => displayGeojsonData(result)).filter(extent => extent);
-
-                } finally {
-                    // Hide loading message
-                    document.getElementById('loadingOverlay').style.display = 'none';
-                    document.getElementById('address').disabled = false;
-                    document.querySelector('#addressForm button').disabled = false;
-                }
-            }
-        });
-
-        function getPolygonLayer(color, source) {
-            const vectorLayer = new ol.layer.Vector({
-                title: 'Polygon Layer',
-                source: source,
-                opacity: 0.5,
-                style: new ol.style.Style({
-                    fill: new ol.style.Fill({
-                        color: color
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: 'black',
-                        width: 4
-                    })
-                })
-            });
-            return vectorLayer;
-        }
-
-
-        function displayGeojsonData(result) {
-            const { prompt, geojson } = result;
-            if (geojson) {
-                // Transform coordinates from WGS84 to Web Mercator
-                const features = new ol.format.GeoJSON({
-                    dataProjection: 'EPSG:4326',
-                    featureProjection: 'EPSG:3857'
-                }).readFeatures(geojson);
-
-                const vectorSource = new ol.source.Vector({
-                    features: features
-                });
-                // color for tree and building
-                const color = prompt.value === 'tree' ? 'green' : 'yellow';
-                const vectorLayer = getPolygonLayer(color, vectorSource);
-                map.addLayer(vectorLayer);
-            }
-        }
-
-        const getBoundingBox = (geometry) => {
-            const olPolygon = new ol.geom.Polygon([geometry.coordinates[0]]);
-            const boundingBox = olPolygon.getExtent();
-            return boundingBox;
-        }
-
-        async function standardizeAndValidateAddress(address) {            
-            const response = await fetch('http://127.0.0.1:5000/api/standardize_and_validate', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ address })
-            });
-            const data = await response.json();
-            return data;
-        }
-
-        async function addBuildingAndTrees(geojson) {
-            console.log('geojson', geojson);
-            // Get geometry regardless of whether geojson is object or dictionary
-            let geometry;
-            if (geojson.features) {
-                geometry = geojson.features[0].geometry;
-            } else if (geojson['features']) {
-                geometry = geojson['features'][0]['geometry'];
-            } else {
-                console.log('invalid geojson format');
-                return [];
-            }
-            // Get bounding box of geojson
-            // geojson will be feature collection, we need to get the bounding box of the first feature
-            const boundingBox = getBoundingBox(geometry);
-            const myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
-
-            const textPrompts = [{
-                value: "buildings",
-                box_threshold: 0.4,
-                text_threshold: 0.25
-            }, {
-                value: "tree",
-                box_threshold: 0.25,
-                text_threshold: 0.25
-            }];
-
-            try {
-                const requestBody = {
-                    "bounding_box": boundingBox,
-                    "text_prompts": textPrompts.map(prompt => ({
-                        value: prompt.value,
-                        box_threshold: prompt.box_threshold,
-                        text_threshold: prompt.text_threshold
-                    })),
-                    "zoom_level": 21
-                };
-                
-                console.log('requestBody', requestBody);
-                
-                const response = await fetch("http://localhost:8001/api/v1/predict", {
-                    method: "POST",
-                    headers: myHeaders,
-                    body: JSON.stringify(requestBody),
-                    redirect: "follow"
-                });
-
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
-
-                return await response.json();
-
-            } catch (error) {
-                console.error("Error in addBuildingAndTrees:", error);
-                return [];
-            }
-        }
-
-    </script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom JS -->
+    <script src="/templates/app.js"></script>
 </body>
-
 </html>
