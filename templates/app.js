@@ -231,69 +231,14 @@ async function fetchASCEData(coordinates, data_category) {
 }
 
 // Process wind load data
-function processWindData(result) {
-    // 初始化返回的MRI数据对象
-    const mriData = {
-        mri10: 'N/A',
-        mri25: 'N/A',
-        mri50: 'N/A',
-        mri100: 'N/A',
-        mri300: 'N/A',
-        mri700: 'N/A',
-        mri1700: 'N/A',
-        mri3000: 'N/A',
-        mri10000: 'N/A',
-        mri100000: 'N/A',
-        mri1000000: 'N/A'
-    };
-    
-    // 检查结果是否包含必要的数据结构
-    if (!result?.catalogItems?.features || !result?.properties?.Values) {
+function processWindData(result) {   
+    if (!result?.properties?.Values) {
         console.log('No mri data found');
         return mriData;
-    }
-    
-    // 步骤1: 提取所有feature的OBJECTID和处理后的name
-    const featuresInfo = [];
-    
-    result.catalogItems.features.forEach(feature => {
-        const attributes = feature.attributes;
-        if (!attributes || !attributes.Name || !attributes.OBJECTID) {
-            return; // 跳过没有必要属性的feature
-        }
-        
-        // 处理name: 匹配w2022_mri后面的数字部分
-        const mriMatch = attributes.Name.match(/w2022_mri(\d+)/);
-        if (mriMatch && mriMatch[1]) {
-            const mriValue = mriMatch[1];
-            const key = `mri${mriValue}`;
-            
-            // 只处理我们关心的MRI值
-            if (key in mriData) {
-                featuresInfo.push({
-                    objectId: attributes.OBJECTID,
-                    key: key
-                });
-            }
-        }
-    });
-    
-    // 步骤2: 按OBJECTID从小到大排序
-    featuresInfo.sort((a, b) => a.objectId - b.objectId);
-    
-    // 步骤3: 将Values数组中的值按顺序分配给对应的key
-    featuresInfo.forEach((info, index) => {
-        if (index < result.properties.Values.length) {
-            mriData[info.key] = `${result.properties.Values[index]} Vmph`;
-        }
-    });
-        
-    const windData = {
-        ...mriData,
-        windSpeed: `${result.value} Vmph`
-    };
-    
-    return windData;
+    }    
+    const sortedValues = [...result.properties.Values].sort((a, b) => a - b);    
+    const windValues = [result.value, ...sortedValues];
+    return windValues.map(value => parseFloat(value).toFixed(2));
 }
 
 // Generate wind load report
@@ -302,16 +247,16 @@ function generateWindReport(windData) {
     let tableHTML = '<table class="table table-striped table-bordered">';
     tableHTML += '<thead class="thead-dark"><tr><th>Parameter</th><th>Value</th></tr></thead>';
     tableHTML += '<tbody>';
-    tableHTML += `<tr><td>Wind Speed</td><td>${windData.windSpeed}</td></tr>`;
-    tableHTML += `<tr><td>10-year MRI</td><td>${windData.mri10}</td></tr>`;
-    tableHTML += `<tr><td>25-year MRI</td><td>${windData.mri25}</td></tr>`;
-    tableHTML += `<tr><td>50-year MRI</td><td>${windData.mri50}</td></tr>`;
-    tableHTML += `<tr><td>100-year MRI</td><td>${windData.mri100}</td></tr>`;
-    tableHTML += `<tr><td>300-year MRI</td><td>${windData.mri300}</td></tr>`;
-    tableHTML += `<tr><td>700-year MRI</td><td>${windData.mri700}</td></tr>`;
-    tableHTML += `<tr><td>1,700-year MRI</td><td>${windData.mri1700}</td></tr>`;
-    tableHTML += `<tr><td>3,000-year MRI</td><td>${windData.mri3000}</td></tr>`;
-    tableHTML += `<tr><td>10,000-year MRI</td><td>${windData.mri10000}</td></tr>`;
+    tableHTML += `<tr><td><b>Wind Speed</b></td><td>${windData[0]} Vmph</td></tr>`;
+    tableHTML += `<tr><td>10-year MRI</td><td>${windData[1]} Vmph</td></tr>`;
+    tableHTML += `<tr><td>25-year MRI</td><td>${windData[2]} Vmph</td></tr>`;
+    tableHTML += `<tr><td>50-year MRI</td><td>${windData[3]} Vmph</td></tr>`;
+    tableHTML += `<tr><td>100-year MRI</td><td>${windData[4]} Vmph</td></tr>`;
+    tableHTML += `<tr><td>300-year MRI</td><td>${windData[5]} Vmph</td></tr>`;
+    tableHTML += `<tr><td>700-year MRI</td><td>${windData[6]} Vmph</td></tr>`;
+    tableHTML += `<tr><td>1,700-year MRI</td><td>${windData[7]} Vmph</td></tr>`;
+    tableHTML += `<tr><td>3,000-year MRI</td><td>${windData[8]} Vmph</td></tr>`;
+    tableHTML += `<tr><td>10,000-year MRI</td><td>${windData[9]} Vmph</td></tr>`;
     tableHTML += '</tbody></table>';
     
     return tableHTML;
