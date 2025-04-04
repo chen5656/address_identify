@@ -582,5 +582,6 @@ function displayASCEReport(data, category) {
 
 //TODO: Process rainfall data
 function processRainData(data) {
- 
+    // TODO: Implement logic to process rainfall data
+    debugger
 }
