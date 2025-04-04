@@ -172,10 +172,10 @@ function displayFemaChart(femaData) {
 const ASCEApiUrls = {
     "Wind": "https://gis.asce.org/arcgis/rest/services/ASCE722/w2022_CONUS_Mosaic/ImageServer/identify",
     "Ice": "https://gis.asce.org/arcgis/rest/services/ASCE722/i2022_mri0250/ImageServer/identify",
-    "?Seismic": "https://earthquake.usgs.gov/ws/designmaps/nehrp-2020.json?latitude=28.093102&longitude=-82.405715&referenceDocument=ASCE7-22&riskCategory=I&siteClass=Default&title=ASCE",
+    "Seismic": "https://earthquake.usgs.gov/ws/designmaps/nehrp-2020.json?latitude={y}&longitude={x}&referenceDocument=ASCE7-22&riskCategory=I&siteClass=Default&title=ASCE",
     "--Snow--": "https://gis.asce.org/arcgis/rest/services/ASCE722/s2022_AlaskaCaseStudy/MapServer/0/query",
-    "?Rain": "https://hdsc.nws.noaa.gov/cgi-bin/hdsc/new/cgi_readH5.py?lat=28.093102&lon=-82.405715&type=pf&data=intensity&units=english&series=ams",
-    "Flood": "https://hazards.fema.gov/arcgis/rest/services/public/NFHL/MapServer/28/query?f=json&where=&returnGeometry=false&spatialRel=esriSpatialRelIntersects&geometry=%7B%22x%22%3A{x}%2C%22y%22%3A{y}%2C%22spatialReference%22%3A%7B%22wkid%22%3A4326%7D%7D&geometryType=esriGeometryPoint&inSR=4326&outFields=*&outSR=4326&callback=dojo_request_script_callbacks.dojo_request_script1",
+    "Rain": "https://hdsc.nws.noaa.gov/cgi-bin/hdsc/new/cgi_readH5.py?lat={y}&lon={x}&type=pf&data=intensity&units=english&series=ams",
+    "Flood": "https://hazards.fema.gov/arcgis/rest/services/public/NFHL/MapServer/28/query?f=json&where=&returnGeometry=false&spatialRel=esriSpatialRelIntersects&geometry=%7B%22x%22%3A{x}%2C%22y%22%3A{y}%2C%22spatialReference%22%3A%7B%22wkid%22%3A4326%7D%7D&geometryType=esriGeometryPoint&inSR=4326&outFields=*&outSR=4326",
     "--Tsunami--": "https://gis.asce.org/arcgis/rest/services/ASCE722/ts2022_Tsunami_Feature_Services/MapServer/4/query",
 }
 
@@ -237,7 +237,7 @@ async function fetchASCEData(coordinates, data_category) {
         const url = ASCEApiUrls[data_category].replace('{x}', x).replace('{y}', y);
         return url;
     }
-
+    
 
     console.log(`Fetching ${data_category} data for coordinates:`, coordinates);
     
@@ -251,7 +251,7 @@ async function fetchASCEData(coordinates, data_category) {
         fullUrl = prepareUrlForImageServer(coordinates, data_category);
     } else if (data_category === "Snow" || data_category === "Tsunami") {
         fullUrl = prepareUrlForMapServer(coordinates, data_category);
-    } else if (data_category === "Flood") {
+    } else if (data_category === "Flood" || data_category === "Seismic" || data_category === "Rain") {
         fullUrl = prepareUrlForFlood(coordinates, data_category);
     }
 
@@ -263,8 +263,15 @@ async function fetchASCEData(coordinates, data_category) {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        data = await response.json();
-        console.log(`Received data for ${data_category}:`, data);
+        
+        // Process response based on data type
+        if (data_category === "Rain") {
+            data = await response.text(); // Get text response instead of JSON
+            console.log(`Received text data for ${data_category}:`, data);
+        } else {
+            data = await response.json();
+            console.log(`Received data for ${data_category}:`, data);
+        }
     } catch (error) {
         console.error(`Error fetching ${data_category} data:`, error);
         throw error;
@@ -275,10 +282,15 @@ async function fetchASCEData(coordinates, data_category) {
             return processWindData(data);
         case "Ice":
             return processIceData(data);
+        case "Flood":
+            return processFloodData(data);
+        case "Seismic":
+            return processSeismicData(data);
+        case "Rain":
+            return processRainData(data);
         default:
             return data;
     }
-
 }
 
 // Process wind load data
@@ -296,6 +308,184 @@ function processWindData(result) {
 
 function processIceData(result) {
     return result?.value.toFixed(2);    
+}
+
+function processFloodData(result) {
+    return result?.features?.[0]?.attributes?.FLD_ZONE;
+}
+
+// Add function to process seismic data
+function processSeismicData(data) {
+    if (!data || !data.response) {
+        return null;
+    }
+    
+    return {
+        riskCategory: data.request.riskCategory || 'I',
+        sdc: data.response.data.sdc || 'N/A',
+        ss: data.response.data.ss,
+        s1: data.response.data.s1,
+        sms: data.response.data.sms,
+        sm1: data.response.data.sm1,
+        sds: data.response.data.sds,
+        sd1: data.response.data.sd1,
+        tl: data.response.data.tl,
+        pgauh: data.response.data.pgauh,
+        pgam: data.response.data.pgam
+    };
+}
+
+// Generate seismic report
+function generateSeismicReport(data) {
+    if (!data) {
+        return '<div class="alert alert-warning">Unable to retrieve seismic data</div>';
+    }
+    
+    // Create risk category and seismic design category sections
+    let reportHTML = '<div class="container">';
+    
+    // Risk category section
+    reportHTML += '<div class="row mb-4">';
+    reportHTML += '<div class="col-12">';
+    reportHTML += '<div class="card">';
+    reportHTML += '<div class="card-header bg-primary text-white"><h5>Risk Category</h5></div>';
+    reportHTML += '<div class="card-body text-center">';
+    reportHTML += `<h2>${data.riskCategory}</h2>`;
+    reportHTML += '</div></div></div></div>';
+    
+    // Seismic design category section
+    reportHTML += '<div class="row mb-4">';
+    reportHTML += '<div class="col-12">';
+    reportHTML += '<div class="card">';
+    reportHTML += '<div class="card-header bg-danger text-white"><h5>Seismic Design Category</h5></div>';
+    reportHTML += '<div class="card-body text-center">';
+    reportHTML += `<h2>${data.sdc}</h2>`;
+    reportHTML += '</div></div></div></div>';
+    
+    // Design parameters table
+    reportHTML += '<div class="row mb-4">';
+    reportHTML += '<div class="col-12">';
+    reportHTML += '<div class="card">';
+    reportHTML += '<div class="card-header bg-info text-white"><h5>Design Parameters</h5></div>';
+    reportHTML += '<div class="card-body">';
+    reportHTML += '<table class="table table-striped table-bordered">';
+    reportHTML += '<thead class="thead-dark"><tr><th>Parameter</th><th>Value</th><th>Description</th></tr></thead>';
+    reportHTML += '<tbody>';
+    reportHTML += `<tr><td>SS</td><td>${data.ss}</td><td>MCER ground motion (0.2s)</td></tr>`;
+    reportHTML += `<tr><td>S1</td><td>${data.s1}</td><td>MCER ground motion (1.0s)</td></tr>`;
+    reportHTML += `<tr><td>SMS</td><td>${data.sms}</td><td>Site-modified spectral acceleration (0.2s)</td></tr>`;
+    reportHTML += `<tr><td>SM1</td><td>${data.sm1}</td><td>Site-modified spectral acceleration (1.0s)</td></tr>`;
+    reportHTML += `<tr><td>SDS</td><td>${data.sds}</td><td>Design spectral acceleration (0.2s)</td></tr>`;
+    reportHTML += `<tr><td>SD1</td><td>${data.sd1}</td><td>Design spectral acceleration (1.0s)</td></tr>`;
+    reportHTML += `<tr><td>TL</td><td>${data.tl}</td><td>Long-period transition period</td></tr>`;
+    reportHTML += `<tr><td>PGA</td><td>${data.pgauh}</td><td>MCEG peak ground acceleration</td></tr>`;
+    reportHTML += `<tr><td>PGAM</td><td>${data.pgam}</td><td>Site-modified peak ground acceleration</td></tr>`;
+    reportHTML += '</tbody></table>';
+    reportHTML += '</div></div></div></div>';
+    
+    // Multi-period design spectrum section
+    reportHTML += '<div class="row">';
+    reportHTML += '<div class="col-12">';
+    reportHTML += '<div class="card">';
+    reportHTML += '<div class="card-header bg-success text-white"><h5>Multi Period Design Spectrum</h5></div>';
+    reportHTML += '<div class="card-body">';
+    reportHTML += '<canvas id="seismicChart" width="400" height="300"></canvas>';
+    reportHTML += '</div></div></div></div>';
+    
+    reportHTML += '</div>'; // Close container
+    
+    // Add script to generate chart when modal is shown
+    reportHTML += `
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById('asceModel');
+        modal.addEventListener('shown.bs.modal', function() {
+            generateSeismicChart(${JSON.stringify(data)});
+        });
+    });
+    
+    function generateSeismicChart(data) {
+        // Calculate design spectrum
+        const periods = [];
+        const spectralValues = [];
+        
+        // Add 0 point
+        periods.push(0);
+        spectralValues.push(0.4 * data.sds);
+        
+        // Add T0 point (0.2 * SD1/SDS)
+        const t0 = 0.2 * (data.sd1 / data.sds);
+        periods.push(t0);
+        spectralValues.push(data.sds);
+        
+        // Add TS point (SD1/SDS)
+        const ts = data.sd1 / data.sds;
+        periods.push(ts);
+        spectralValues.push(data.sds);
+        
+        // Add intermediate points
+        for (let t = ts + 0.1; t <= 2.0; t += 0.1) {
+            periods.push(t);
+            spectralValues.push(data.sd1 / t);
+        }
+        
+        // Add TL point
+        if (data.tl) {
+            periods.push(data.tl);
+            spectralValues.push(data.sd1 / data.tl);
+            
+            // Points after TL
+            for (let t = data.tl + 0.5; t <= data.tl * 2; t += 0.5) {
+                periods.push(t);
+                spectralValues.push(data.sd1 * data.tl / (t * t));
+            }
+        }
+        
+        const ctx = document.getElementById('seismicChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: periods,
+                datasets: [{
+                    label: 'Design Spectral Response Acceleration',
+                    data: spectralValues,
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Period, T (sec)'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Spectral Response Acceleration, Sa (g)'
+                        },
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Design Response Spectrum'
+                    }
+                }
+            }
+        });
+    }
+    </script>
+    `;
+    
+    return reportHTML;
 }
 
 // Generate wind load report
@@ -347,7 +537,7 @@ document.getElementById('viewResultsButton').addEventListener('click', async fun
     let ASCEData;
 
     try {
-        if (loadType === 'Wind' || loadType === 'Ice' || loadType === 'Snow' || loadType === 'Rain' || loadType === 'Flood' || loadType === 'Tsunami') {
+        if (loadType === 'Wind' || loadType === 'Ice' || loadType === 'Snow' || loadType === 'Rain' || loadType === 'Flood' || loadType === 'Tsunami' || loadType === 'Seismic') {
             // Get wind load data
             ASCEData = await fetchASCEData(currentAddressCoordinates, loadType);
         } else {
@@ -375,13 +565,22 @@ function displayASCEReport(data, category) {
     let reportHTML = '';
     if (category === 'Wind') {
         reportHTML = generateWindReport(data);
-    }else if (category === 'Ice') {
+    } else if (category === 'Ice') {
         reportHTML = `<p>Ice Thickness: ${data} ft</p>`;
-    }  
+    } else if (category === 'Flood') {
+        reportHTML = `<p>Flood Zone: ${data}</p>`;
+    } else if (category === 'Seismic') {
+        reportHTML = generateSeismicReport(data);
+    }
     
     document.getElementById('asceReport').innerHTML = reportHTML;
     document.getElementById('asceModalLongTitle').textContent = `${category} Report`;
     
     const modal = new bootstrap.Modal(document.getElementById('asceModel'));
     modal.show();
+}
+
+//TODO: Process rainfall data
+function processRainData(data) {
+ 
 }
