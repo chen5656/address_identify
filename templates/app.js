@@ -44,7 +44,7 @@ olLayers.forEach(layer => {
 });
 
 // Handle form submission
-let currentAddressCoordinates = [-96, 37];
+let currentAddressCoordinates = [-97, 36];
 
 document.getElementById('addressForm').addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -171,42 +171,91 @@ function displayFemaChart(femaData) {
 // ASCE API
 const ASCEApiUrls = {
     "Wind": "https://gis.asce.org/arcgis/rest/services/ASCE722/w2022_CONUS_Mosaic/ImageServer/identify",
-    "Seismic": "https://ascehazardtool.org/proxy/proxy.ashx?https://earthquake.usgs.gov/ws/designmaps/nehrp-2020.json?latitude=28.093102&longitude=-82.405715&referenceDocument=ASCE7-22&riskCategory=I&siteClass=Default&title=ASCE",
-    "Ice": "https://gis.asce.org/arcgis/rest/services/ASCE722/i2022_mri0250/ImageServer/identify?f=json&geometry=%7B%22x%22%3A-82.405715%2C%22y%22%3A28.093102%2C%22spatialReference%22%3A%7B%22wkid%22%3A4326%7D%7D&returnGeometry=false&returnCatalogItems=true&geometryType=esriGeometryPoint&returnPixelValues=true",
-    "Snow": "https://gis.asce.org/arcgis/rest/services/ASCE722/s2022_AlaskaCaseStudy/MapServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&geometry=%7B%22x%22%3A-82.405715%2C%22y%22%3A28.093102%2C%22spatialReference%22%3A%7B%22wkid%22%3A4326%7D%7D&geometryType=esriGeometryPoint&inSR=4326&outFields=*&outSR=4326",
-    "Rain": "https://ascehazardtool.org/proxy/proxy.ashx?https://hdsc.nws.noaa.gov/cgi-bin/hdsc/new/cgi_readH5.py?lat=28.093102&lon=-82.405715&type=pf&data=intensity&units=english&series=ams",
-    "Flood": "https://hazards.fema.gov/arcgis/rest/services/public/NFHL/MapServer/28/query?f=json&where=&returnGeometry=false&spatialRel=esriSpatialRelIntersects&geometry=%7B%22x%22%3A-82.405715%2C%22y%22%3A28.093102%2C%22spatialReference%22%3A%7B%22wkid%22%3A4326%7D%7D&geometryType=esriGeometryPoint&inSR=4326&outFields=*&outSR=4326&callback=dojo_request_script_callbacks.dojo_request_script1",
-    "Tsunami": "https://gis.asce.org/arcgis/rest/services/ASCE722/ts2022_Tsunami_Feature_Services/MapServer/4/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&geometry=%7B%22x%22%3A-82.405715%2C%22y%22%3A28.093102%2C%22spatialReference%22%3A%7B%22wkid%22%3A4326%7D%7D&geometryType=esriGeometryPoint&inSR=4326&outFields=*&outSR=4326",
+    "Ice": "https://gis.asce.org/arcgis/rest/services/ASCE722/i2022_mri0250/ImageServer/identify",
+    "?Seismic": "https://earthquake.usgs.gov/ws/designmaps/nehrp-2020.json?latitude=28.093102&longitude=-82.405715&referenceDocument=ASCE7-22&riskCategory=I&siteClass=Default&title=ASCE",
+    "--Snow--": "https://gis.asce.org/arcgis/rest/services/ASCE722/s2022_AlaskaCaseStudy/MapServer/0/query",
+    "?Rain": "https://hdsc.nws.noaa.gov/cgi-bin/hdsc/new/cgi_readH5.py?lat=28.093102&lon=-82.405715&type=pf&data=intensity&units=english&series=ams",
+    "Flood": "https://hazards.fema.gov/arcgis/rest/services/public/NFHL/MapServer/28/query?f=json&where=&returnGeometry=false&spatialRel=esriSpatialRelIntersects&geometry=%7B%22x%22%3A{x}%2C%22y%22%3A{y}%2C%22spatialReference%22%3A%7B%22wkid%22%3A4326%7D%7D&geometryType=esriGeometryPoint&inSR=4326&outFields=*&outSR=4326&callback=dojo_request_script_callbacks.dojo_request_script1",
+    "--Tsunami--": "https://gis.asce.org/arcgis/rest/services/ASCE722/ts2022_Tsunami_Feature_Services/MapServer/4/query",
 }
 
 // Fetch wind load data
 async function fetchASCEData(coordinates, data_category) {
+
+    function prepareUrlForImageServer(coordinates, data_category){           
+        const params = {
+            "f": "json",
+            "geometry": JSON.stringify({
+                x: coordinates[0],
+                y: coordinates[1],
+                spatialReference: { wkid: 4326 }
+            }),
+            "returnGeometry": "false",
+            "returnCatalogItems": "true",
+            "geometryType": "esriGeometryPoint",
+            "returnPixelValues": "true"
+        };
+        
+        const queryString = new URLSearchParams();
+        for (const key in params) {
+            queryString.append(key, params[key]);
+        }
+        const url = ASCEApiUrls[data_category];
+        const fullUrl = `${url}?${queryString.toString()}`;        
+        return fullUrl;
+    }
+    
+    function prepareUrlForMapServer(coordinates, data_category) {
+        const params = {
+            "f": "json",
+            "where": "1=1",
+            "returnGeometry": "false",
+            "spatialRel": "esriSpatialRelIntersects",
+            "geometry": JSON.stringify({
+                x: coordinates[0],
+                y: coordinates[1],
+                spatialReference: { wkid: 4326 }
+            }),
+            "geometryType": "esriGeometryPoint",
+            "inSR": "4326",
+            "outFields": "*",
+            "outSR": "4326"
+        };
+        
+        const queryString = new URLSearchParams();
+        for (const key in params) {
+            queryString.append(key, params[key]);
+        }
+        const url = ASCEApiUrls[data_category];
+        const fullUrl = `${url}?${queryString.toString()}`;
+        return fullUrl;
+    }
+
+    function prepareUrlForFlood(coordinates, data_category) {
+        const x = coordinates[0]
+        const y = coordinates[1]
+        const url = ASCEApiUrls[data_category].replace('{x}', x).replace('{y}', y);
+        return url;
+    }
+
+
     console.log(`Fetching ${data_category} data for coordinates:`, coordinates);
     
     if (!(data_category in ASCEApiUrls)) {
-        throw new Error(`Unsupported data category: ${data_category}`);
+        alert(`Unsupported data category: ${data_category}`);
+        return;      
     }
-    
-    const params = {
-        "f": "json",
-        "geometry": JSON.stringify({
-            x: coordinates[0],
-            y: coordinates[1],
-            spatialReference: { wkid: 4326 }
-        }),
-        "returnGeometry": "false",
-        "returnCatalogItems": "true",
-        "geometryType": "esriGeometryPoint",
-        "returnPixelValues": "true"
-    };
-    
-    const queryString = new URLSearchParams();
-    for (const key in params) {
-        queryString.append(key, params[key]);
+
+    let fullUrl;
+    if (data_category === "Wind" || data_category === "Ice") {
+        fullUrl = prepareUrlForImageServer(coordinates, data_category);
+    } else if (data_category === "Snow" || data_category === "Tsunami") {
+        fullUrl = prepareUrlForMapServer(coordinates, data_category);
+    } else if (data_category === "Flood") {
+        fullUrl = prepareUrlForFlood(coordinates, data_category);
     }
-    
-    const url = ASCEApiUrls[data_category];
-    const fullUrl = `${url}?${queryString.toString()}`;
+
+    debugger
     console.log(`Requesting URL for ${data_category}:`, fullUrl);
     let data;
     try {
@@ -224,6 +273,8 @@ async function fetchASCEData(coordinates, data_category) {
     switch(data_category) {
         case "Wind":
             return processWindData(data);
+        case "Ice":
+            return processIceData(data);
         default:
             return data;
     }
@@ -232,13 +283,19 @@ async function fetchASCEData(coordinates, data_category) {
 
 // Process wind load data
 function processWindData(result) {   
+    let sortedValues;
     if (!result?.properties?.Values) {
-        console.log('No mri data found');
-        return mriData;
-    }    
-    const sortedValues = [...result.properties.Values].sort((a, b) => a - b);    
+        console.log('No wind MRI data found');
+        sortedValues = [];
+    }else{
+        sortedValues = [...result.properties.Values].sort((a, b) => a - b);   
+    }         
     const windValues = [result.value, ...sortedValues];
     return windValues.map(value => parseFloat(value).toFixed(2));
+}
+
+function processIceData(result) {
+    return result?.value.toFixed(2);    
 }
 
 // Generate wind load report
@@ -290,7 +347,7 @@ document.getElementById('viewResultsButton').addEventListener('click', async fun
     let ASCEData;
 
     try {
-        if (loadType === 'Wind') {
+        if (loadType === 'Wind' || loadType === 'Ice' || loadType === 'Snow' || loadType === 'Rain' || loadType === 'Flood' || loadType === 'Tsunami') {
             // Get wind load data
             ASCEData = await fetchASCEData(currentAddressCoordinates, loadType);
         } else {
@@ -318,8 +375,9 @@ function displayASCEReport(data, category) {
     let reportHTML = '';
     if (category === 'Wind') {
         reportHTML = generateWindReport(data);
-    }
-     
+    }else if (category === 'Ice') {
+        reportHTML = `<p>Ice Thickness: ${data} ft</p>`;
+    }  
     
     document.getElementById('asceReport').innerHTML = reportHTML;
     document.getElementById('asceModalLongTitle').textContent = `${category} Report`;
@@ -327,4 +385,3 @@ function displayASCEReport(data, category) {
     const modal = new bootstrap.Modal(document.getElementById('asceModel'));
     modal.show();
 }
-

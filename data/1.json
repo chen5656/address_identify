@@ -1,0 +1,76 @@
+{
+    "displayFieldName": "NAME",
+    "fieldAliases": {
+        "OBJECTID": "OBJECTID",
+        "NAME": "NAME",
+        "Elevation": "Elevation",
+        "Value1": "Value1",
+        "Value2": "Value2",
+        "Value3": "Value3",
+        "Value4": "Value4",
+        "WinterWind": "WinterWind",
+        "Notes": "Notes",
+        "Shape_Length": "Shape_Length",
+        "Shape_Area": "Shape_Area"
+    },
+    "fields": [
+        {
+            "name": "OBJECTID",
+            "type": "esriFieldTypeOID",
+            "alias": "OBJECTID"
+        },
+        {
+            "name": "NAME",
+            "type": "esriFieldTypeString",
+            "alias": "NAME",
+            "length": 57
+        },
+        {
+            "name": "Elevation",
+            "type": "esriFieldTypeDouble",
+            "alias": "Elevation"
+        },
+        {
+            "name": "Value1",
+            "type": "esriFieldTypeDouble",
+            "alias": "Value1"
+        },
+        {
+            "name": "Value2",
+            "type": "esriFieldTypeDouble",
+            "alias": "Value2"
+        },
+        {
+            "name": "Value3",
+            "type": "esriFieldTypeDouble",
+            "alias": "Value3"
+        },
+        {
+            "name": "Value4",
+            "type": "esriFieldTypeDouble",
+            "alias": "Value4"
+        },
+        {
+            "name": "WinterWind",
+            "type": "esriFieldTypeDouble",
+            "alias": "WinterWind"
+        },
+        {
+            "name": "Notes",
+            "type": "esriFieldTypeString",
+            "alias": "Notes",
+            "length": 50
+        },
+        {
+            "name": "Shape_Length",
+            "type": "esriFieldTypeDouble",
+            "alias": "Shape_Length"
+        },
+        {
+            "name": "Shape_Area",
+            "type": "esriFieldTypeDouble",
+            "alias": "Shape_Area"
+        }
+    ],
+    "features": []
+}
