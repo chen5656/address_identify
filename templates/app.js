@@ -44,7 +44,7 @@ olLayers.forEach(layer => {
 });
 
 // Handle form submission
-let currentAddressCoordinates = null;
+let currentAddressCoordinates = [-96, 37];
 
 document.getElementById('addressForm').addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -168,22 +168,25 @@ function displayFemaChart(femaData) {
     });
 }
 
-// Wind API URLs
-const windApiUrls = [
-    {
-        name: "MRI",
-        url: "https://gis.asce.org/arcgis/rest/services/ASCE722/w2022_CONUS_Mosaic/ImageServer/identify"
-    }
-];
+// ASCE API
+const ASCEApiUrls = {
+    "Wind": "https://gis.asce.org/arcgis/rest/services/ASCE722/w2022_CONUS_Mosaic/ImageServer/identify",
+    "Seismic": "https://ascehazardtool.org/proxy/proxy.ashx?https://earthquake.usgs.gov/ws/designmaps/nehrp-2020.json?latitude=28.093102&longitude=-82.405715&referenceDocument=ASCE7-22&riskCategory=I&siteClass=Default&title=ASCE",
+    "Ice": "https://gis.asce.org/arcgis/rest/services/ASCE722/i2022_mri0250/ImageServer/identify?f=json&geometry=%7B%22x%22%3A-82.405715%2C%22y%22%3A28.093102%2C%22spatialReference%22%3A%7B%22wkid%22%3A4326%7D%7D&returnGeometry=false&returnCatalogItems=true&geometryType=esriGeometryPoint&returnPixelValues=true",
+    "Snow": "https://gis.asce.org/arcgis/rest/services/ASCE722/s2022_AlaskaCaseStudy/MapServer/0/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&geometry=%7B%22x%22%3A-82.405715%2C%22y%22%3A28.093102%2C%22spatialReference%22%3A%7B%22wkid%22%3A4326%7D%7D&geometryType=esriGeometryPoint&inSR=4326&outFields=*&outSR=4326",
+    "Rain": "https://ascehazardtool.org/proxy/proxy.ashx?https://hdsc.nws.noaa.gov/cgi-bin/hdsc/new/cgi_readH5.py?lat=28.093102&lon=-82.405715&type=pf&data=intensity&units=english&series=ams",
+    "Flood": "https://hazards.fema.gov/arcgis/rest/services/public/NFHL/MapServer/28/query?f=json&where=&returnGeometry=false&spatialRel=esriSpatialRelIntersects&geometry=%7B%22x%22%3A-82.405715%2C%22y%22%3A28.093102%2C%22spatialReference%22%3A%7B%22wkid%22%3A4326%7D%7D&geometryType=esriGeometryPoint&inSR=4326&outFields=*&outSR=4326&callback=dojo_request_script_callbacks.dojo_request_script1",
+    "Tsunami": "https://gis.asce.org/arcgis/rest/services/ASCE722/ts2022_Tsunami_Feature_Services/MapServer/4/query?f=json&where=1%3D1&returnGeometry=false&spatialRel=esriSpatialRelIntersects&geometry=%7B%22x%22%3A-82.405715%2C%22y%22%3A28.093102%2C%22spatialReference%22%3A%7B%22wkid%22%3A4326%7D%7D&geometryType=esriGeometryPoint&inSR=4326&outFields=*&outSR=4326",
+}
 
 // Fetch wind load data
-async function fetchWindData(coordinates) {
-    console.log('Fetching wind data for coordinates:', coordinates);
+async function fetchASCEData(coordinates, data_category) {
+    console.log(`Fetching ${data_category} data for coordinates:`, coordinates);
     
-    const results = {};
-    const promises = [];
+    if (!(data_category in ASCEApiUrls)) {
+        throw new Error(`Unsupported data category: ${data_category}`);
+    }
     
-    // 构建参数对象
     const params = {
         "f": "json",
         "geometry": JSON.stringify({
@@ -197,139 +200,98 @@ async function fetchWindData(coordinates) {
         "returnPixelValues": "true"
     };
     
-    // 创建URL查询字符串
     const queryString = new URLSearchParams();
     for (const key in params) {
         queryString.append(key, params[key]);
     }
     
-    windApiUrls.forEach((urlObj, index) => {
-        const fullUrl = `${urlObj.url}?${queryString.toString()}`;
-        console.log(`Requesting URL (${index}):`, fullUrl);
-        
-        const promise = fetch(fullUrl)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                results[index] = data;
-                console.log(`Received data for URL index ${index}:`, data);
-            })
-            .catch(error => {
-                console.error(`Error fetching URL index ${index}:`, error);
-                results[index] = null;
-            });
-        
-        promises.push(promise);
-    });
-    
-    // Wait for all requests to complete
-    await Promise.all(promises);
-    
-    // Process results
-    const processedData = processWindData(results);
-        
-    return processedData
+    const url = ASCEApiUrls[data_category];
+    const fullUrl = `${url}?${queryString.toString()}`;
+    console.log(`Requesting URL for ${data_category}:`, fullUrl);
+    let data;
+    try {
+        const response = await fetch(fullUrl);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        data = await response.json();
+        console.log(`Received data for ${data_category}:`, data);
+    } catch (error) {
+        console.error(`Error fetching ${data_category} data:`, error);
+        throw error;
+    }
+
+    switch(data_category) {
+        case "Wind":
+            return processWindData(data);
+        default:
+            return data;
+    }
+
 }
 
 // Process wind load data
-function processWindData(results) {
-    function matchMriResults(result) {
-        // 初始化返回对象
-        const mriData = {
-            mri10: 'N/A',
-            mri25: 'N/A',
-            mri50: 'N/A',
-            mri100: 'N/A',
-            mri300: 'N/A',
-            mri700: 'N/A',
-            mri1700: 'N/A',
-            mri3000: 'N/A',
-            mri10000: 'N/A',
-            mri100000: 'N/A',
-            mri1000000: 'N/A'
-        };
-        
-        // 确保结果存在且包含必要的数据
-        if (!result || !result.catalogItems || !result.catalogItems.features || 
-            !result.properties || !result.properties.Values) {
-            return mriData;
-        }
-        
-        // 创建OBJECTID到Values索引的映射
-        const valuesByObjectId = {};
-        result.catalogItemVisibilities.forEach((visibility, index) => {
-            if (visibility === 1 && index < result.properties.Values.length) {
-                valuesByObjectId[index + 1] = result.properties.Values[index];
-            }
-        });
-        
-        // 遍历features一次，填充所有MRI值
-        result.catalogItems.features.forEach(feature => {
-            const name = feature.attributes.Name;
-            const objectId = feature.attributes.OBJECTID;
-            
-            if (!name) return;
-            
-            // 使用正则表达式提取MRI值
-            const mriMatch = name.match(/w2022_mri(\d+)/);
-            if (mriMatch && mriMatch[1]) {
-                const mriValue = mriMatch[1];
-                const key = `mri${mriValue}`;
-                
-                // 如果mriData中有这个键，则更新值
-                if (key in mriData) {
-                    // 使用OBJECTID获取对应的值
-                    if (objectId in valuesByObjectId) {
-                        mriData[key] = valuesByObjectId[objectId];
-                    } else if (objectId - 1 < result.properties.Values.length) {
-                        // 备选方案：直接使用OBJECTID-1作为索引
-                        mriData[key] = result.properties.Values[objectId - 1];
-                    }
-                }
-            }
-        });
-        
+function processWindData(result) {
+    // 初始化返回的MRI数据对象
+    const mriData = {
+        mri10: 'N/A',
+        mri25: 'N/A',
+        mri50: 'N/A',
+        mri100: 'N/A',
+        mri300: 'N/A',
+        mri700: 'N/A',
+        mri1700: 'N/A',
+        mri3000: 'N/A',
+        mri10000: 'N/A',
+        mri100000: 'N/A',
+        mri1000000: 'N/A'
+    };
+    
+    // 检查结果是否包含必要的数据结构
+    if (!result?.catalogItems?.features || !result?.properties?.Values) {
+        console.log('No mri data found');
         return mriData;
     }
     
-    // 获取所有MRI值
-    const mriValues = matchMriResults(results[0]);
+    // 步骤1: 提取所有feature的OBJECTID和处理后的name
+    const featuresInfo = [];
     
-    const windData = {
-        ...mriValues,
-        windSpeed: mriValues.mri300 !== 'N/A' ? `${mriValues.mri300} Vmph` : 'N/A'
-    };
-    
-    // 添加单位到所有MRI值
-    Object.keys(mriValues).forEach(key => {
-        if (mriValues[key] !== 'N/A') {
-            windData[key] = `${mriValues[key]} Vmph`;
+    result.catalogItems.features.forEach(feature => {
+        const attributes = feature.attributes;
+        if (!attributes || !attributes.Name || !attributes.OBJECTID) {
+            return; // 跳过没有必要属性的feature
+        }
+        
+        // 处理name: 匹配w2022_mri后面的数字部分
+        const mriMatch = attributes.Name.match(/w2022_mri(\d+)/);
+        if (mriMatch && mriMatch[1]) {
+            const mriValue = mriMatch[1];
+            const key = `mri${mriValue}`;
+            
+            // 只处理我们关心的MRI值
+            if (key in mriData) {
+                featuresInfo.push({
+                    objectId: attributes.OBJECTID,
+                    key: key
+                });
+            }
         }
     });
     
-    // Check special wind region
-    if (results[5] && results[5].features) {
-        windData.specialWindRegion = results[5].features.length > 0;
-    }
+    // 步骤2: 按OBJECTID从小到大排序
+    featuresInfo.sort((a, b) => a.objectId - b.objectId);
     
-    // Check hurricane prone zone
-    if (results[2] && results[2].features) {
-        windData.hurricaneProne = results[2].features.length > 0;
-    }
-    
-    // Check wind borne debris requirements
-    if (results[3] && results[3].features) {
-        windData.windborneDebris = results[3].features.length > 0;
-    }
-    
-    // Get location information
-    if (results[8] && results[8].features && results[8].features.length > 0) {
-        windData.location = results[8].features[0].attributes.STATE_NAME || 'Unknown';
-    }
+    // 步骤3: 将Values数组中的值按顺序分配给对应的key
+    featuresInfo.forEach((info, index) => {
+        if (index < result.properties.Values.length) {
+            mriData[info.key] = `${result.properties.Values[index]} Vmph`;
+        }
+    });
+        
+    const windData = {
+        ...mriData,
+        windSpeed: `${result.value} Vmph`
+    };
     
     return windData;
 }
@@ -368,31 +330,56 @@ document.getElementById('viewResultsButton').addEventListener('click', async fun
         return;
     }
     
+    // Show loading spinner and disable button
+    const button = document.getElementById('viewResultsButton');
+    const buttonText = document.getElementById('buttonText');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    
+    button.classList.add('disabled');
+    buttonText.textContent = 'Loading...';
+    loadingSpinner.style.display = 'inline-block';
+    
     const loadType = selectedLoadType.id;
     console.log('Selected load type:', loadType);
-    
-    if (loadType === 'Wind') {        
-        // Get wind load data
-        try {
-            const windData = await fetchWindData(currentAddressCoordinates);
-            displayWindReport(windData);
-            console.log('Wind data fetched successfully:', windData);
-        } catch (error) {
-            console.error('Error fetching wind data:', error);
-            alert('Error fetching wind load data. Please try again later.');
+
+    let ASCEData;
+
+    try {
+        if (loadType === 'Wind') {
+            // Get wind load data
+            ASCEData = await fetchASCEData(currentAddressCoordinates, loadType);
+        } else {
+            console.log(`${loadType} data processing not yet implemented`);
+            alert(`${loadType} data processing not yet implemented`);
         }
-    } else {
-        console.log(`${loadType} data processing not yet implemented`);
-        alert(`${loadType} data processing not yet implemented`);
+    }catch (error) {
+        console.error(`Error fetching ${loadType} data:`, error);
+        alert(`Error fetching ${loadType} data. Please try again later.`);
     }
+
+    if (ASCEData) {
+        console.log('ASCE data:', ASCEData);
+        displayASCEReport(ASCEData, loadType);
+    }
+
+    // Hide loading spinner and enable button
+    button.classList.remove('disabled');
+    buttonText.textContent = 'View Results';
+    loadingSpinner.style.display = 'none';
+    
 });
 
-function displayWindReport(windData) {
-    const windReportHTML = generateWindReport(windData);
+function displayASCEReport(data, category) {
+    let reportHTML = '';
+    if (category === 'Wind') {
+        reportHTML = generateWindReport(data);
+    }
+     
     
-    document.getElementById('windReport').innerHTML = windReportHTML;
+    document.getElementById('asceReport').innerHTML = reportHTML;
+    document.getElementById('asceModalLongTitle').textContent = `${category} Report`;
     
-    const modal = new bootstrap.Modal(document.getElementById('exampleModalCenter'));
+    const modal = new bootstrap.Modal(document.getElementById('asceModel'));
     modal.show();
 }
 
