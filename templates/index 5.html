@@ -40,7 +40,7 @@
       padding: 15px;
       margin: 20px 0;
       position: fixed;
-      top: 20px;
+      top: -10px;
       right: 20px;
       width: 350px;
       height: auto;
@@ -225,7 +225,7 @@
   padding: 20px;
   color: #fff;
   background-color: #1e1e2f;
-  height: 200px;
+  height: 160px;
   overflow-y: auto;
 }
 
@@ -297,9 +297,6 @@
     }
     #legendList input[type="checkbox"] {
       margin-right: 8px;
-    }
-    .standard-version-tab {
-      margin-top: -0px;
     }
 
   </style>
@@ -455,10 +452,10 @@
       </div>
     </div>
     <div id="resultsButton" class="white padding--small margin--small button">
-      <a class="waves-effect waves-light btn-large blue darken-4 fill__wide" id="viewResultsButton">
+      <button id="viewResultsButton" class="btn btn-primary fill__wide">
         <span id="buttonText">View Results</span>
         <i id="loadingSpinner" class="fas fa-spinner fa-spin" style="display: none;"></i>
-      </a>
+      </button>
     </div>
   </div>
   <!-- Modal -->
@@ -835,7 +832,7 @@ document.getElementById('checkIntersectionButton').addEventListener('click', fun
     // Add the parcelLayer to the map
     map.addLayer(parcelLayer);
     // Handle form submission
-    let currentAddressCoordinates;
+    let currentAddressCoordinates = [-97, 37];
     document.getElementById('addressForm').addEventListener('submit', async function(e) {
   e.preventDefault();
   const address = document.getElementById('address').value;
@@ -984,43 +981,6 @@ document.getElementById('checkIntersectionButton').addEventListener('click', fun
       "Flood": "https://hazards.fema.gov/arcgis/rest/services/public/NFHL/MapServer/28/query?f=json&where=&returnGeometry=false&spatialRel=esriSpatialRelIntersects&geometry=%7B%22x%22%3A{x}%2C%22y%22%3A{y}%2C%22spatialReference%22%3A%7B%22wkid%22%3A4326%7D%7D&geometryType=esriGeometryPoint&inSR=4326&outFields=*&outSR=4326",
       "Tsunami": "https://gis.asce.org/arcgis/rest/services/ASCE722/ts2022_Tsunami_Feature_Services/MapServer/4/query"
     }
-// Fetch ASCE data
-async function fetchASCEData(coordinates, data_category) {
-  try {
-    console.log('Fetching ASCE data for coordinates:', coordinates); // Debugging log
-    const fullUrl = prepareUrlForImageServer(coordinates, data_category);
-    console.log(`Requesting URL for ${data_category}:`, fullUrl);
-
-    const response = await fetch(fullUrl);
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    console.log(`Received data for ${data_category}:`, data);
-
-    if (data.value === "NoData") {
-  console.warn(`No data found for ${data_category} at the given coordinates.`);
-  alert(`No data found for ${data_category} at the given coordinates.`);
-  return null;
-}
-
-// Skip the `features` check for Wind load type
-if (data_category !== "Wind" && (!data.features || data.features.length === 0)) {
-  console.warn(`No data found for ${data_category} at the given coordinates.`);
-  alert(`No data found for ${data_category} at the given coordinates.`);
-  return null;
-}
-
-return processASCEData(data, data_category);
-  } catch (error) {
-    console.error(`Error fetching ${data_category} data:`, error);
-    alert(`Failed to fetch ${data_category} data. Please try again later.`);
-    throw error;
-  }
-}
-
 function prepareUrlForImageServer(coordinates, data_category) {
   const transformedCoordinates = ol.proj.transform(coordinates, 'EPSG:4326', 'EPSG:3857'); // Transform to EPSG:3857
   const params = {
@@ -1067,6 +1027,12 @@ function prepareUrlForImageServer(coordinates, data_category) {
     const fullUrl = `${url}?${queryString.toString()}`;
     return fullUrl;
   }
+  function prepareUrlForSeismic(coordinates, data_category) {
+    const x = coordinates[0];
+    const y = coordinates[1];
+    const url = ASCEApiUrls[data_category].replace('{x}', x).replace('{y}', y);
+    return url;
+  }
 
   function prepareUrlForFlood(coordinates, data_category) {
     const x = coordinates[0];
@@ -1078,7 +1044,12 @@ function prepareUrlForImageServer(coordinates, data_category) {
   async function fetchASCEData(coordinates, data_category) {
   try {
     console.log('Fetching ASCE data for coordinates:', coordinates); // Debugging log
-    const fullUrl = prepareUrlForImageServer(coordinates, data_category);
+    let fullUrl;
+    if (data_category === "Seismic" || data_category === "Flood") {
+        fullUrl = prepareUrlForSeismic(coordinates, data_category);
+      } else{
+        fullUrl = prepareUrlForImageServer(coordinates, data_category);
+      }
     console.log(`Requesting URL for ${data_category}:`, fullUrl);
 
     const response = await fetch(fullUrl);
@@ -1176,9 +1147,10 @@ function processWindData(result) {
 
   // Extract all "Values" from the properties
   const windValues = result.properties.Values.map(val => parseFloat(val).toFixed(2));
+  const sortedValues = [...windValues].sort((a, b) => a - b); 
 
   // Include the primary value at the beginning of the array
-  return [primaryValue, ...windValues];
+  return [primaryValue, ...sortedValues];
 }
 // Process ice load data
 function processIceData(result) {
@@ -1253,9 +1225,14 @@ function generateIceReport(iceThickness) {
 }
     // Generate wind load report
     function generateWindReport(windData) {
+      debugger
   if (!windData || windData.length === 0) {
     return '<div class="alert alert-warning">No wind data available for the given coordinates.</div>';
   }
+  // sort
+  const primaryValue = windData[0];
+  const sortedRemainingValues = [...windData.slice(1)].sort((a, b) => a - b);
+  windData = [primaryValue, ...sortedRemainingValues];
 
   let tableHTML = '<table class="table table-striped table-bordered">';
   tableHTML += '<thead class="thead-dark"><tr><th>Parameter</th><th>Value (mph)</th></tr></thead>';
