@@ -44,7 +44,7 @@ olLayers.forEach(layer => {
 });
 
 // Handle form submission
-let currentAddressCoordinates;
+let currentAddressCoordinates=[-97, 37];
 
 document.getElementById('addressForm').addEventListener('submit', async function(e) {
     e.preventDefault();

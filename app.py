@@ -17,7 +17,8 @@ model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
 # Load parcel data from GeoJSON
-parcels = gpd.read_file(r'C:\Users\527336\AppData\Roaming\JetBrains\PyCharmCE2024.2\light-edit\Parcel_Map_-_October_2019.geojson')
+parcels =gpd.GeoDataFrame()
+# gpd.read_file(r'C:\Users\527336\AppData\Roaming\JetBrains\PyCharmCE2024.2\light-edit\Parcel_Map_-_October_2019.geojson')
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
