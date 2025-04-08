@@ -868,8 +868,7 @@ document.getElementById('checkIntersectionButton').addEventListener('click', fun
   const address = document.getElementById('address').value;
   document.getElementById('beforeAddress').textContent = address;
   try {
-    // const result = await standardizeAndValidateAddress(address);
-    const result = await getMockResponse(address);
+    const result = await standardizeAndValidateAddress(address);
     console.log('Standardized Address Result:', result); // Debugging log
 
     document.getElementById('afterAddress').textContent = result.standardizedAddress;
@@ -1478,65 +1477,6 @@ function displayGeojsonData(geojson) {
             return vectorLayer;
         }
 
-
-        
-        
-async function getMockResponse(address) {
-  // 模拟网络延迟
-  await new Promise(resolve => setTimeout(resolve, 500));
-  
-  // 返回模拟数据
-  return {
-    "confidenceScore": 0.7999999999999999,
-    "lat": 43.04680339999999,
-    "lon": -76.1479982,
-    "parcelCentroid": null,
-    "parcelDetails": null,
-    "standardizedAddress": address, // 使用输入的地址作为标准化地址
-    "summary": ["Base Score for Location Match: 0.5", "Street Number Match: 0.2", "Street Name Match: 0.1"],
-    "parcel_match": {
-      "features": [
-        {
-          "geometry": {
-            "coordinates": [
-              [
-                [
-                  -76.1476195211959,
-                  43.046335921459
-                ],
-                [
-                  -76.1486970617787,
-                  43.0463450416646
-                ],
-                [
-                  -76.1486889873379,
-                  43.0469411544697
-                ],
-                [
-                  -76.1476106886688,
-                  43.0469319510482
-                ],
-                [
-                  -76.1476195211959,
-                  43.046335921459
-                ]
-              ]
-            ],
-            "type": "Polygon"
-          },
-          "id": "37028",
-          "properties": {
-            "ACRES": 1.41,
-            "ADDRESSNAM": "Montgomery St To State St",
-            "ADDRESSNUM": "401",
-            "BlockLevel": "400 MONTGOMERY ST"
-            // 其他属性已省略以简化代码
-          }
-        }
-      ]
-    }
-  };
-}
-  </script>
+ </script>
 </body>
 </html>
