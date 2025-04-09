@@ -24,6 +24,7 @@
       width: 100%;
       height: 400px;
     }
+
     #legend {
       position: absolute;
       top: 10px;
@@ -33,6 +34,7 @@
       border: 1px solid #ccc;
       z-index: 1000;
     }
+
     .criteria-container {
       background-color: #000048;
       border: 1px solid #e0e0e0;
@@ -51,27 +53,33 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       z-index: 100;
     }
+
     .criteria-container__content {
       display: flex;
       flex-direction: column;
       flex-grow: 1;
       overflow: auto;
     }
+
     .margin--small {
       margin: 8px 0;
     }
+
     .criteria-container__section {
       margin-bottom: 5px;
     }
+
     .input-field {
       margin-bottom: 15px;
     }
+
     .input-field label {
       display: block;
       margin-bottom: 5px;
       font-weight: bold;
       color: #666;
     }
+
     .input-field input,
     .input-field select {
       width: 100%;
@@ -80,23 +88,29 @@
       border-radius: 5px;
       box-sizing: border-box;
     }
+
     .risk-level-selected-placeholder {
       font-weight: bold;
       color: #333;
     }
+
     .inline-block {
       display: inline-block;
       margin-right: 15px;
     }
+
     .fill--50p__wide {
       width: 50%;
     }
+
     .with-gap {
       margin-right: 8px;
     }
+
     .filled-in {
       margin-right: 8px;
     }
+
     .waves-effect {
       display: inline-block;
       padding: 10px 20px;
@@ -107,39 +121,49 @@
       text-decoration: none;
       transition: background-color 0.3s;
     }
+
     .waves-effect:hover {
       background-color: #1976d2;
     }
+
     .btn-large {
       font-size: 1.2em;
       padding: 12px 25px;
     }
+
     .blue.darken-4 {
       background-color: #0d47a1;
     }
+
     .fill__wide {
       width: 100%;
     }
+
     .flex {
       display: flex;
     }
+
     .flex-row {
       flex-direction: row;
     }
+
     .flex-wrap {
       flex-wrap: wrap;
     }
+
     .padding--small {
       padding: 8px;
     }
+
     .button {
       cursor: pointer;
     }
+
     .ol-popup {
       position: absolute;
       color: #fff;
       background-color: #000048;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
       padding: 15px;
       border-radius: 5px;
       border: 1px solid #cccccc;
@@ -148,7 +172,9 @@
       min-width: 280px;
       z-index: 1000;
     }
-    .ol-popup:after, .ol-popup:before {
+
+    .ol-popup:after,
+    .ol-popup:before {
       top: 100%;
       border: solid transparent;
       content: " ";
@@ -157,18 +183,21 @@
       position: absolute;
       pointer-events: none;
     }
+
     .ol-popup:after {
       border-top-color: white;
       border-width: 10px;
       left: 48px;
       margin-left: -10px;
     }
+
     .ol-popup:before {
       border-top-color: #cccccc;
       border-width: 11px;
       left: 48px;
       margin-left: -11px;
     }
+
     .ol-popup-closer {
       text-decoration: none;
       position: absolute;
@@ -177,67 +206,71 @@
       font-size: 16px;
       color: #999;
     }
+
     .ol-popup-closer:after {
       content: "×";
     }
+
     #femaChart {
-  width: 100%;
-  height: 400px;
-}
-/* Tabs Container Styling */
-.tabs-container {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background-color: #1e1e2f;
-  border-top: 2px solid #444;
-  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3);
-  z-index: 1000;
-}
+      width: 100%;
+      height: 400px;
+    }
 
-.tabs {
-  display: flex;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  border-bottom: 1px solid #444;
-}
+    /* Tabs Container Styling */
+    .tabs-container {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #1e1e2f;
+      border-top: 2px solid #444;
+      box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+    }
 
-.tabs li {
-  flex: 1;
-  text-align: center;
-  padding: 10px;
-  cursor: pointer;
-  color: #fff;
-  background-color: #2e2e3e;
-  transition: background-color 0.3s ease;
-}
+    .tabs {
+      display: flex;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      border-bottom: 1px solid #444;
+    }
 
-.tabs li.active {
-  background-color: #007bff;
-  color: #fff;
-}
+    .tabs li {
+      flex: 1;
+      text-align: center;
+      padding: 10px;
+      cursor: pointer;
+      color: #fff;
+      background-color: #2e2e3e;
+      transition: background-color 0.3s ease;
+    }
 
-.tabs li:hover {
-  background-color: #0056b3;
-}
+    .tabs li.active {
+      background-color: #007bff;
+      color: #fff;
+    }
 
-.tab-content {
-  padding: 20px;
-  color: #fff;
-  background-color: #1e1e2f;
-  height: 160px;
-  overflow-y: auto;
-}
+    .tabs li:hover {
+      background-color: #0056b3;
+    }
 
-.tab-pane {
-  display: none;
-}
+    .tab-content {
+      padding: 20px;
+      color: #fff;
+      background-color: #1e1e2f;
+      height: 160px;
+      overflow-y: auto;
+    }
 
-.tab-pane.active {
-  display: block;
-}
+    .tab-pane {
+      display: none;
+    }
+
+    .tab-pane.active {
+      display: block;
+    }
+
     .layer-list-control {
       position: absolute;
       top: 10px;
@@ -245,19 +278,22 @@
       background: #000048;
       padding: 10px;
       border-radius: 4px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
       z-index: 1000;
       max-height: 80vh;
       overflow-y: auto;
       width: 250px;
     }
+
     .layer-list-control h4 {
       margin-top: 0;
       margin-bottom: 10px;
     }
+
     .layer-list-item {
       margin-bottom: 5px;
     }
+
     /* Form Popup */
     .form-popup {
       position: absolute;
@@ -267,56 +303,63 @@
       background: #000048;
       padding: 15px;
       border-radius: 5px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
       z-index: 1000;
       max-width: 500px;
     }
+
     .form-popup h3 {
       margin-top: 0;
     }
+
     .address-form-title {
       font-size: 18px;
     }
-        /* Legend Popup Styling */
+
+    /* Legend Popup Styling */
     #legendList {
       position: absolute;
-      top: 550px; /* Position below the address form popup */
+      top: 550px;
+      /* Position below the address form popup */
       left: 10px;
       color: #fff;
       background: #000048;
       padding: 15px;
       border-radius: 5px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-      z-index: 999; /* Just below the form popup z-index */
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+      z-index: 999;
+      /* Just below the form popup z-index */
       max-width: 350px;
       list-style-type: none;
       margin: 0;
       max-height: 350px;
       overflow-y: auto;
     }
+
     #legendList li {
       margin-bottom: 8px;
       display: flex;
       align-items: center;
     }
+
     #legendList input[type="checkbox"] {
       margin-right: 8px;
     }
 
     .loading-overlay {
-            display: none;
-            position: fixed;
-            top: 100px;
-            right: 10px;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 10px 15px;
-            border-radius: 4px;
-            z-index: 1000;
-        }
-
+      display: none;
+      position: fixed;
+      top: 100px;
+      right: 10px;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 10px 15px;
+      border-radius: 4px;
+      z-index: 1000;
+    }
   </style>
 </head>
+
 <body>
 
   <div id="formPopup" class="form-popup">
@@ -326,26 +369,27 @@
       <input type="text" id="address" name="address">
       <button type="submit">Submit</button>
     </form>
-  <div id="info">
-    <p>Before Standardization: <span id="beforeAddress"></span></p>
-    <p>After Standardization: <span id="afterAddress"></span></p>
-    <p>Confidence Score: <span id="confidenceScore"></span></p>
-    <p>Summary: <span id="summary"></span></p>
-    <p>Parcel Details: <span id="parcelDetails"></span></p>
-  </div>
+    <div id="info">
+      <p>Before Standardization: <span id="beforeAddress"></span></p>
+      <p>After Standardization: <span id="afterAddress"></span></p>
+      <p>Confidence Score: <span id="confidenceScore"></span></p>
+      <p>Summary: <span id="summary"></span></p>
+      <p>Parcel Details: <span id="parcelDetails"></span></p>
+    </div>
   </div>
   <div id="map" class="map">
     <header style="background-color: #000048; color: white; padding: 15px; text-align: center;">
-  <h1 style="margin: 0; font-size: 24px;">
-    <img src="http://127.0.0.1:5000/static/cognizant_logo.png" alt="Logo" style="height: 60px; margin-right: 10px;"> Property Risk Assessment (PoV)
-  </h1>
-</header>
+      <h1 style="margin: 0; font-size: 24px;">
+        <img src="http://127.0.0.1:5000/static/cognizant_logo.png" alt="Logo" style="height: 60px; margin-right: 10px;">
+        Property Risk Assessment (PoV)
+      </h1>
+    </header>
 
   </div>
 
   <div id="loadingOverlay" class="loading-overlay">
     <i class="fas fa-spinner fa-spin"></i> Predicting buildings and trees...
-</div>
+  </div>
 
   <ul id="legendList"></ul>
   <div id="criteria" class="criteria-container visable">
@@ -487,7 +531,8 @@
     </div>
   </div>
   <!-- Modal -->
-  <div class="modal fade" id="asceModel" tabindex="-1" role="dialog" aria-labelledby="asceModelTitle" aria-hidden="true">
+  <div class="modal fade" id="asceModel" tabindex="-1" role="dialog" aria-labelledby="asceModelTitle"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -525,276 +570,191 @@
       })
     });
     // Add ASCE 7-22 map services
-       const layers = [
-    // ASCE 7-22 layers
-    { id: 'layer1', title: 'CA Profile Service', url: 'https://gis.asce.org/arcgis/rest/services/ASCE722/ts2022_Tsunami_Tile/MapServer', type: 'tile' },
-    { id: 'floodFema', title: 'DEM Mosaic', url: 'https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_Flood_Hazard_Reduced_Set_gdb/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=geojson', type: 'feature' },
+    const layers = [
+      // ASCE 7-22 layers
+      { id: 'layer1', title: 'CA Profile Service', url: 'https://gis.asce.org/arcgis/rest/services/ASCE722/ts2022_Tsunami_Tile/MapServer', type: 'tile' },
+      { id: 'floodFema', title: 'DEM Mosaic', url: 'https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_Flood_Hazard_Reduced_Set_gdb/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=geojson', type: 'feature' },
 
-    // External layers
-    { id: 'femaLayer', title: 'FEMA Earthquake Exposure', url: 'https://gis.fema.gov/arcgis/rest/services/GP/EQ_Exposure/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=geojson', type: 'feature' },
-    { id: 'osmParcelLayer', title: 'OSM Parcels NA', url: 'https://services.arcgis.com/uDTUpUPbk8X8mXwl/ArcGIS/rest/services/108_Parcels/FeatureServer/19/query?where=1%3D1&outFields=*&returnGeometry=true&outSR=4326&f=geojson', type: 'feature' },
-    { id: 'osmBuildingsLayer', title: 'OSM Parcels NA', url: 'https://services.arcgis.com/uDTUpUPbk8X8mXwl/ArcGIS/rest/services/buildings_for_web/FeatureServer/0/query?where=1%3D1&outFields=*&returnGeometry=true&outSR=4326&f=geojson', type: 'feature' },
-    { id: 'noaaLayer', title: 'NOAA Watches, Warnings, and Advisories', url: 'https://mapservices.weather.noaa.gov/eventdriven/rest/services/WWA/watch_warn_adv/MapServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=geojson', type: 'feature' },
-    { id: 'nwsLayer', title: 'NWS Watches and Warnings', url: 'https://services9.arcgis.com/RHVPKKiFTONKtxq3/arcgis/rest/services/NWS_Watches_Warnings_v1/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=geojson', type: 'feature' },
-    { id: 'smokeForecastLayer', title: 'NDGD Smoke Forecast', url: 'https://services9.arcgis.com/RHVPKKiFTONKtxq3/arcgis/rest/services/NDGD_SmokeForecast_v1/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=geojson', type: 'feature' }
-];
-// Add all layers to the map
-const olLayers = layers.map(layer => {
-    let olLayer;
-    if (layer.type === 'tile') {
+      // External layers
+      { id: 'femaLayer', title: 'FEMA Earthquake Exposure', url: 'https://gis.fema.gov/arcgis/rest/services/GP/EQ_Exposure/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=geojson', type: 'feature' },
+      { id: 'osmParcelLayer', title: 'OSM Parcels NA', url: 'https://services.arcgis.com/uDTUpUPbk8X8mXwl/ArcGIS/rest/services/108_Parcels/FeatureServer/19/query?where=1%3D1&outFields=*&returnGeometry=true&outSR=4326&f=geojson', type: 'feature' },
+      { id: 'osmBuildingsLayer', title: 'OSM Parcels NA', url: 'https://services.arcgis.com/uDTUpUPbk8X8mXwl/ArcGIS/rest/services/buildings_for_web/FeatureServer/0/query?where=1%3D1&outFields=*&returnGeometry=true&outSR=4326&f=geojson', type: 'feature' },
+      { id: 'noaaLayer', title: 'NOAA Watches, Warnings, and Advisories', url: 'https://mapservices.weather.noaa.gov/eventdriven/rest/services/WWA/watch_warn_adv/MapServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=geojson', type: 'feature' },
+      { id: 'nwsLayer', title: 'NWS Watches and Warnings', url: 'https://services9.arcgis.com/RHVPKKiFTONKtxq3/arcgis/rest/services/NWS_Watches_Warnings_v1/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=geojson', type: 'feature' },
+      { id: 'smokeForecastLayer', title: 'NDGD Smoke Forecast', url: 'https://services9.arcgis.com/RHVPKKiFTONKtxq3/arcgis/rest/services/NDGD_SmokeForecast_v1/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=geojson', type: 'feature' }
+    ];
+    // Add all layers to the map
+    const olLayers = layers.map(layer => {
+      let olLayer;
+      if (layer.type === 'tile') {
         olLayer = new ol.layer.Tile({
-            source: new ol.source.TileArcGISRest({
-                url: layer.url
-            })
+          source: new ol.source.TileArcGISRest({
+            url: layer.url
+          })
         });
-    } else if (layer.type === 'feature') {
+      } else if (layer.type === 'feature') {
         olLayer = new ol.layer.Vector({
-            source: new ol.source.Vector({
-                url: layer.url,
-                format: new ol.format.GeoJSON()
-            })
+          source: new ol.source.Vector({
+            url: layer.url,
+            format: new ol.format.GeoJSON()
+          })
         });
-    } else if (layer.type === 'image') {
+      } else if (layer.type === 'image') {
         olLayer = new ol.layer.Image({
-            source: new ol.source.ImageArcGISRest({
-                url: layer.url
-            })
+          source: new ol.source.ImageArcGISRest({
+            url: layer.url
+          })
         });
-    }
-    map.addLayer(olLayer);
-    return { id: layer.id, olLayer, title: layer.title };
-});
-// Add layers to the legend
-const legendList = document.getElementById('legendList');
-// Add a title to the legend list
-const legendTitle = document.createElement('p');
-legendTitle.textContent = 'Map Layers';
-legendTitle.style.marginTop = '0';
-legendTitle.style.marginBottom = '10px';
-legendTitle.style.borderBottom = '1px solid #ccc';
-legendTitle.style.paddingBottom = '5px';
-legendList.appendChild(legendTitle);
-olLayers.forEach(layer => {
-    const listItem = document.createElement('li');
-    listItem.innerHTML = `<input type="checkbox" id="${layer.id}" checked> ${layer.title}`;
-    legendList.appendChild(listItem);
-
-    document.getElementById(layer.id).addEventListener('change', function() {
-        layer.olLayer.setVisible(this.checked);
+      }
+      map.addLayer(olLayer);
+      return { id: layer.id, olLayer, title: layer.title };
     });
-});
+    // Add layers to the legend
+    const legendList = document.getElementById('legendList');
+    // Add a title to the legend list
+    const legendTitle = document.createElement('p');
+    legendTitle.textContent = 'Map Layers';
+    legendTitle.style.marginTop = '0';
+    legendTitle.style.marginBottom = '10px';
+    legendTitle.style.borderBottom = '1px solid #ccc';
+    legendTitle.style.paddingBottom = '5px';
+    legendList.appendChild(legendTitle);
+    olLayers.forEach(layer => {
+      const listItem = document.createElement('li');
+      listItem.innerHTML = `<input type="checkbox" id="${layer.id}" checked> ${layer.title}`;
+      legendList.appendChild(listItem);
 
-function initializeTabs() {
-  const tabsList = document.getElementById('tabsList');
-  const tabsContent = document.getElementById('tabsContent');
+      document.getElementById(layer.id).addEventListener('change', function () {
+        layer.olLayer.setVisible(this.checked);
+      });
+    });
 
-  // Clear existing tabs and content
-  tabsList.innerHTML = '';
-  tabsContent.innerHTML = '';
+    function initializeTabs() {
+      const tabsList = document.getElementById('tabsList');
+      const tabsContent = document.getElementById('tabsContent');
 
-  // Add a common input tab (Buffer Input)
-  const commonTab = document.createElement('li');
-  commonTab.textContent = 'Buffer Input';
-  commonTab.classList.add('tab', 'active'); // Set as active by default
-  commonTab.dataset.tab = 'commonInputTab';
-  tabsList.appendChild(commonTab);
+      // Clear existing tabs and content
+      tabsList.innerHTML = '';
+      tabsContent.innerHTML = '';
 
-  // Ensure the "Buffer Input" tab content is preserved
-  let commonInputTabContent = document.getElementById('commonInputTab');
-  if (!commonInputTabContent) {
-    commonInputTabContent = document.createElement('div');
-    commonInputTabContent.id = 'commonInputTab';
-    commonInputTabContent.classList.add('tab-pane', 'active');
-    commonInputTabContent.innerHTML = `
+      // Add a common input tab (Buffer Input)
+      const commonTab = document.createElement('li');
+      commonTab.textContent = 'Buffer Input';
+      commonTab.classList.add('tab', 'active'); // Set as active by default
+      commonTab.dataset.tab = 'commonInputTab';
+      tabsList.appendChild(commonTab);
+
+      // Ensure the "Buffer Input" tab content is preserved
+      let commonInputTabContent = document.getElementById('commonInputTab');
+      if (!commonInputTabContent) {
+        commonInputTabContent = document.createElement('div');
+        commonInputTabContent.id = 'commonInputTab';
+        commonInputTabContent.classList.add('tab-pane', 'active');
+        commonInputTabContent.innerHTML = `
       <h4>Buffer Input</h4>
       <label for="bufferDistance">Buffer Distance (meters):</label>
       <input type="number" id="bufferDistance" value="0" min="0">
       <button id="checkIntersectionButton" class="btn btn-primary">Check Intersection</button>
     `;
-    tabsContent.appendChild(commonInputTabContent);
-  }
+        tabsContent.appendChild(commonInputTabContent);
+      }
 
-  // Add layer-specific tabs
-  olLayers.forEach((layer, index) => {
-    const tab = document.createElement('li');
-    tab.textContent = layer.title;
-    tab.classList.add('tab');
-    tab.dataset.tab = `tab${index}`;
-    tabsList.appendChild(tab);
+      // Add layer-specific tabs
+      olLayers.forEach((layer, index) => {
+        const tab = document.createElement('li');
+        tab.textContent = layer.title;
+        tab.classList.add('tab');
+        tab.dataset.tab = `tab${index}`;
+        tabsList.appendChild(tab);
 
-    // Create tab content for intersection summary
-    const tabPane = document.createElement('div');
-    tabPane.classList.add('tab-pane');
-    tabPane.id = `tab${index}`;
-    tabPane.innerHTML = `
+        // Create tab content for intersection summary
+        const tabPane = document.createElement('div');
+        tabPane.classList.add('tab-pane');
+        tabPane.id = `tab${index}`;
+        tabPane.innerHTML = `
       <h4>${layer.title} Intersection Summary</h4>
       <ul id="summaryList${index}"></ul>
     `;
-    tabsContent.appendChild(tabPane);
-  });
+        tabsContent.appendChild(tabPane);
+      });
 
-  // Add event listeners for tab switching
-  const tabs = document.querySelectorAll('.tabs li');
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      // Remove active class from all tabs and panes
-      tabs.forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+      // Add event listeners for tab switching
+      const tabs = document.querySelectorAll('.tabs li');
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          // Remove active class from all tabs and panes
+          tabs.forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
 
-      // Add active class to the clicked tab and corresponding pane
-      tab.classList.add('active');
-      const targetTab = tab.dataset.tab;
-      const targetPane = document.getElementById(targetTab);
-      if (targetPane) {
-        targetPane.classList.add('active');
-      } else {
-        console.error(`Tab pane with id "${targetTab}" not found.`);
-      }
-    });
-  });
-}
-function checkIntersection() {
-  const bufferDistance = parseFloat(document.getElementById('bufferDistance').value) || 0;
-  const activeTab = document.querySelector('.tabs li.active');
-  const activeTabIndex = Array.from(activeTab.parentNode.children).indexOf(activeTab) - 1; // Subtract 1 for the common input tab
-
-  if (activeTabIndex < 0) {
-    alert('Please select a layer tab to check intersections.');
-    return;
-  }
-
-  const layer = olLayers[activeTabIndex];
-  console.log(`Checking intersection for layer: ${layer.title}, Buffer Distance: ${bufferDistance}`);
-
-  // Create a GeoJSON point for the address coordinates
-  const point = turf.point(currentAddressCoordinates);
-
-  // Create a buffer around the point (bufferDistance is in meters)
-  const buffer = turf.buffer(point, bufferDistance, { units: 'meters' });
-  console.log('Buffer Geometry (EPSG:4326):', buffer);
-
-  // Convert the buffer geometry to OpenLayers format (EPSG:3857)
-  const bufferFeature = new ol.Feature({
-    geometry: new ol.format.GeoJSON().readGeometry(buffer.geometry, {
-      dataProjection: 'EPSG:4326',
-      featureProjection: 'EPSG:3857'
-    })
-  });
-
-  // Style for the buffer
-  const bufferStyle = new ol.style.Style({
-    stroke: new ol.style.Stroke({
-      color: 'blue',
-      width: 2
-    }),
-    fill: new ol.style.Fill({
-      color: 'rgba(0, 0, 255, 0.1)'
-    })
-  });
-  bufferFeature.setStyle(bufferStyle);
-
-  // Create a vector source and layer for the buffer
-  const bufferSource = new ol.source.Vector({
-    features: [bufferFeature]
-  });
-  const bufferLayer = new ol.layer.Vector({
-    source: bufferSource
-  });
-
-  // Add the buffer layer to the map
-  map.addLayer(bufferLayer);
-
-  let intersectingCount = 0;
-
-  // Check intersection with features in the layer
-  const features = layer.olLayer.getSource().getFeatures();
-  console.log(`Features in layer "${layer.title}":`, features);
-
-  features.forEach(feature => {
-    // Convert feature geometry to GeoJSON in EPSG:4326
-    const featureGeometry = new ol.format.GeoJSON().writeFeatureObject(feature, {
-      dataProjection: 'EPSG:4326',
-      featureProjection: 'EPSG:3857'
-    });
-
-    console.log(`Feature Geometry (EPSG:4326) for layer "${layer.title}":`, featureGeometry);
-
-    // Check intersection using Turf.js
-    try {
-      if (turf.booleanIntersects(buffer, featureGeometry)) {
-        intersectingCount++;
-      }
-    } catch (error) {
-      console.error(`Error checking intersection for layer "${layer.title}":`, error);
+          // Add active class to the clicked tab and corresponding pane
+          tab.classList.add('active');
+          const targetTab = tab.dataset.tab;
+          const targetPane = document.getElementById(targetTab);
+          if (targetPane) {
+            targetPane.classList.add('active');
+          } else {
+            console.error(`Tab pane with id "${targetTab}" not found.`);
+          }
+        });
+      });
     }
-  });
+    function checkIntersection() {
+      const bufferDistance = parseFloat(document.getElementById('bufferDistance').value) || 0;
+      const activeTab = document.querySelector('.tabs li.active');
+      const activeTabIndex = Array.from(activeTab.parentNode.children).indexOf(activeTab) - 1; // Subtract 1 for the common input tab
 
-  // Update the intersection summary for this layer
-  const summaryList = document.getElementById(`summaryList${activeTabIndex}`);
-  summaryList.innerHTML = ''; // Clear previous results
+      if (activeTabIndex < 0) {
+        alert('Please select a layer tab to check intersections.');
+        return;
+      }
 
-  if (intersectingCount > 0) {
-    const listItem = document.createElement('li');
-    listItem.textContent = `${layer.title}: ${intersectingCount} intersecting feature(s)`;
-    summaryList.appendChild(listItem);
-  } else {
-    const listItem = document.createElement('li');
-    listItem.textContent = 'No intersection found.';
-    summaryList.appendChild(listItem);
-  }
-}
+      const layer = olLayers[activeTabIndex];
+      console.log(`Checking intersection for layer: ${layer.title}, Buffer Distance: ${bufferDistance}`);
 
-// Initialize tabs on page load
-initializeTabs();
-function checkIntersectionWithLayers(coordinates, bufferDistance) {
-  console.log('Coordinates:', coordinates);
-  console.log('Buffer Distance:', bufferDistance);
+      // Create a GeoJSON point for the address coordinates
+      const point = turf.point(currentAddressCoordinates);
 
-  // Create a GeoJSON point for the address coordinates
-  const point = turf.point(coordinates);
+      // Create a buffer around the point (bufferDistance is in meters)
+      const buffer = turf.buffer(point, bufferDistance, { units: 'meters' });
+      console.log('Buffer Geometry (EPSG:4326):', buffer);
 
-  // Create a buffer around the point (bufferDistance is in meters)
-  const buffer = turf.buffer(point, bufferDistance, { units: 'meters' });
-  console.log('Buffer Geometry (EPSG:4326):', buffer);
+      // Convert the buffer geometry to OpenLayers format (EPSG:3857)
+      const bufferFeature = new ol.Feature({
+        geometry: new ol.format.GeoJSON().readGeometry(buffer.geometry, {
+          dataProjection: 'EPSG:4326',
+          featureProjection: 'EPSG:3857'
+        })
+      });
 
-  // Convert the buffer geometry to OpenLayers format (EPSG:3857)
-  const bufferFeature = new ol.Feature({
-    geometry: new ol.format.GeoJSON().readGeometry(buffer.geometry, {
-      dataProjection: 'EPSG:4326',
-      featureProjection: 'EPSG:3857'
-    })
-  });
+      // Style for the buffer
+      const bufferStyle = new ol.style.Style({
+        stroke: new ol.style.Stroke({
+          color: 'blue',
+          width: 2
+        }),
+        fill: new ol.style.Fill({
+          color: 'rgba(0, 0, 255, 0.1)'
+        })
+      });
+      bufferFeature.setStyle(bufferStyle);
 
-  // Style for the buffer
-  const bufferStyle = new ol.style.Style({
-    stroke: new ol.style.Stroke({
-      color: 'blue',
-      width: 2
-    }),
-    fill: new ol.style.Fill({
-      color: 'rgba(0, 0, 255, 0.1)'
-    })
-  });
-  bufferFeature.setStyle(bufferStyle);
+      // Create a vector source and layer for the buffer
+      const bufferSource = new ol.source.Vector({
+        features: [bufferFeature]
+      });
+      const bufferLayer = new ol.layer.Vector({
+        source: bufferSource
+      });
 
-  // Create a vector source and layer for the buffer
-  const bufferSource = new ol.source.Vector({
-    features: [bufferFeature]
-  });
-  const bufferLayer = new ol.layer.Vector({
-    source: bufferSource
-  });
-
-  // Add the buffer layer to the map
-  map.addLayer(bufferLayer);
-
-  // Check intersection with each layer
-  olLayers.forEach((layer, index) => {
-    if (layer.olLayer instanceof ol.layer.Vector) {
-      const features = layer.olLayer.getSource().getFeatures();
-      console.log(`Features in layer "${layer.title}":`, features);
+      // Add the buffer layer to the map
+      map.addLayer(bufferLayer);
+      searchResultLayers.push(bufferLayer); // Track this layer
 
       let intersectingCount = 0;
+
+      // Check intersection with features in the layer
+      const features = layer.olLayer.getSource().getFeatures();
+      console.log(`Features in layer "${layer.title}":`, features);
 
       features.forEach(feature => {
         // Convert feature geometry to GeoJSON in EPSG:4326
@@ -815,100 +775,195 @@ function checkIntersectionWithLayers(coordinates, bufferDistance) {
         }
       });
 
-      // Update the intersection summary for this layer in its respective tab
-      const summaryList = document.getElementById(`summaryList${index}`);
-      if (summaryList) {
-        summaryList.innerHTML = ''; // Clear previous results
+      // Update the intersection summary for this layer
+      const summaryList = document.getElementById(`summaryList${activeTabIndex}`);
+      summaryList.innerHTML = ''; // Clear previous results
 
-        if (intersectingCount > 0) {
-          const listItem = document.createElement('li');
-          listItem.textContent = `${layer.title}: ${intersectingCount} intersecting feature(s)`;
-          summaryList.appendChild(listItem);
-        } else {
-          const listItem = document.createElement('li');
-          listItem.textContent = 'No intersection found.';
-          summaryList.appendChild(listItem);
-        }
+      if (intersectingCount > 0) {
+        const listItem = document.createElement('li');
+        listItem.textContent = `${layer.title}: ${intersectingCount} intersecting feature(s)`;
+        summaryList.appendChild(listItem);
       } else {
-        console.warn(`Summary list for layer "${layer.title}" not found.`);
-      }
-
-      // Update the tab title with the count
-      const tab = document.querySelector(`.tabs li[data-tab="tab${index}"]`);
-      if (tab) {
-        tab.textContent = `${layer.title} (${intersectingCount})`;
+        const listItem = document.createElement('li');
+        listItem.textContent = 'No intersection found.';
+        summaryList.appendChild(listItem);
       }
     }
-  });
-}
-document.getElementById('checkIntersectionButton').addEventListener('click', function () {
-  console.log('Check Intersection button clicked.');
 
-  if (!currentAddressCoordinates) {
-    alert('Please enter an address first.');
-    return;
-  }
+    // Initialize tabs on page load
+    initializeTabs();
+    function checkIntersectionWithLayers(coordinates, bufferDistance) {
+      console.log('Coordinates:', coordinates);
+      console.log('Buffer Distance:', bufferDistance);
 
-  const bufferDistance = parseFloat(document.getElementById('bufferDistance').value) || 0;
-  console.log('Buffer Distance:', bufferDistance);
+      // Create a GeoJSON point for the address coordinates
+      const point = turf.point(coordinates);
 
-  checkIntersectionWithLayers(currentAddressCoordinates, bufferDistance);
-});
+      // Create a buffer around the point (bufferDistance is in meters)
+      const buffer = turf.buffer(point, bufferDistance, { units: 'meters' });
+      console.log('Buffer Geometry (EPSG:4326):', buffer);
+
+      // Convert the buffer geometry to OpenLayers format (EPSG:3857)
+      const bufferFeature = new ol.Feature({
+        geometry: new ol.format.GeoJSON().readGeometry(buffer.geometry, {
+          dataProjection: 'EPSG:4326',
+          featureProjection: 'EPSG:3857'
+        })
+      });
+
+      // Style for the buffer
+      const bufferStyle = new ol.style.Style({
+        stroke: new ol.style.Stroke({
+          color: 'blue',
+          width: 2
+        }),
+        fill: new ol.style.Fill({
+          color: 'rgba(0, 0, 255, 0.1)'
+        })
+      });
+      bufferFeature.setStyle(bufferStyle);
+
+      // Create a vector source and layer for the buffer
+      const bufferSource = new ol.source.Vector({
+        features: [bufferFeature]
+      });
+      const bufferLayer = new ol.layer.Vector({
+        source: bufferSource
+      });
+
+      // Add the buffer layer to the map
+      map.addLayer(bufferLayer);
+
+      // Check intersection with each layer
+      olLayers.forEach((layer, index) => {
+        if (layer.olLayer instanceof ol.layer.Vector) {
+          const features = layer.olLayer.getSource().getFeatures();
+          console.log(`Features in layer "${layer.title}":`, features);
+
+          let intersectingCount = 0;
+
+          features.forEach(feature => {
+            // Convert feature geometry to GeoJSON in EPSG:4326
+            const featureGeometry = new ol.format.GeoJSON().writeFeatureObject(feature, {
+              dataProjection: 'EPSG:4326',
+              featureProjection: 'EPSG:3857'
+            });
+
+            console.log(`Feature Geometry (EPSG:4326) for layer "${layer.title}":`, featureGeometry);
+
+            // Check intersection using Turf.js
+            try {
+              if (turf.booleanIntersects(buffer, featureGeometry)) {
+                intersectingCount++;
+              }
+            } catch (error) {
+              console.error(`Error checking intersection for layer "${layer.title}":`, error);
+            }
+          });
+
+          // Update the intersection summary for this layer in its respective tab
+          const summaryList = document.getElementById(`summaryList${index}`);
+          if (summaryList) {
+            summaryList.innerHTML = ''; // Clear previous results
+
+            if (intersectingCount > 0) {
+              const listItem = document.createElement('li');
+              listItem.textContent = `${layer.title}: ${intersectingCount} intersecting feature(s)`;
+              summaryList.appendChild(listItem);
+            } else {
+              const listItem = document.createElement('li');
+              listItem.textContent = 'No intersection found.';
+              summaryList.appendChild(listItem);
+            }
+          } else {
+            console.warn(`Summary list for layer "${layer.title}" not found.`);
+          }
+
+          // Update the tab title with the count
+          const tab = document.querySelector(`.tabs li[data-tab="tab${index}"]`);
+          if (tab) {
+            tab.textContent = `${layer.title} (${intersectingCount})`;
+          }
+        }
+      });
+    }
+    document.getElementById('checkIntersectionButton').addEventListener('click', function () {
+      console.log('Check Intersection button clicked.');
+
+      if (!currentAddressCoordinates) {
+        alert('Please enter an address first.');
+        return;
+      }
+
+      const bufferDistance = parseFloat(document.getElementById('bufferDistance').value) || 0;
+      console.log('Buffer Distance:', bufferDistance);
+
+      checkIntersectionWithLayers(currentAddressCoordinates, bufferDistance);
+    });
     // Define parcelLayer
     let parcelLayer = new ol.layer.Vector({
       source: new ol.source.Vector()
     });
     // Add the parcelLayer to the map
     map.addLayer(parcelLayer);
+
+    // Track search result layers to clear them between searches
+    let searchResultLayers = [];
+
     // Handle form submission
-// <!--    let currentAddressCoordinates = [-97, 37];-->
-  let currentAddressCoordinates;
-    document.getElementById('addressForm').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  const address = document.getElementById('address').value;
-  document.getElementById('beforeAddress').textContent = address;
-  try {
-    const result = await standardizeAndValidateAddress(address);
-    console.log('Standardized Address Result:', result); // Debugging log
+    // let currentAddressCoordinates = [-97, 37];
+    let currentAddressCoordinates;
+    document.getElementById('addressForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+            
+      // Clear previous search results
+      clearSearchResults();
 
-    document.getElementById('afterAddress').textContent = result.standardizedAddress;
-    document.getElementById('confidenceScore').textContent = result.confidenceScore;
-    document.getElementById('summary').textContent = result.summary.join(', ');
+      const address = document.getElementById('address').value;
+      document.getElementById('beforeAddress').textContent = address;
+      try {
+        const result = await standardizeAndValidateAddress(address);
+        console.log('Standardized Address Result:', result); // Debugging log
 
-    if (result.parcelDetails) {
-      document.getElementById('parcelDetails').textContent = JSON.stringify(result.parcelDetails, null, 2);
-    } else {
-      document.getElementById('parcelDetails').textContent = 'No parcel details available.';
-    }
+        document.getElementById('afterAddress').textContent = result.standardizedAddress;
+        document.getElementById('confidenceScore').textContent = result.confidenceScore;
+        document.getElementById('summary').textContent = result.summary.join(', ');
 
-    // Set coordinates
-    if (result.lat && result.lon) {
-      currentAddressCoordinates = [result.lon, result.lat];
-    } else if (result.parcelCentroid) {
-      currentAddressCoordinates = [result.parcelCentroid.lon, result.parcelCentroid.lat];
-    }
-    console.log('Coordinates after standardization:', currentAddressCoordinates); // Debugging log
+        if (result.parcelDetails) {
+          document.getElementById('parcelDetails').textContent = JSON.stringify(result.parcelDetails, null, 2);
+        } else {
+          document.getElementById('parcelDetails').textContent = 'No parcel details available.';
+        }
 
-    // Add the address point to the map
-    if (currentAddressCoordinates) {
-      const addressPoint = new ol.Feature({
-        geometry: new ol.geom.Point(ol.proj.fromLonLat(currentAddressCoordinates))
-      });
-      addressPoint.setStyle(new ol.style.Style({
-        image: new ol.style.Icon({
-          src: 'https://openlayers.org/en/v6.5.0/examples/data/icon.png'
-        })
-      }));
-      const vectorSource = new ol.source.Vector({
-        features: [addressPoint]
-      });
-      const vectorLayer = new ol.layer.Vector({
-        source: vectorSource
-      });
-      map.addLayer(vectorLayer);
-      map.getView().setCenter(ol.proj.fromLonLat(currentAddressCoordinates));
-      map.getView().setZoom(15);
-    }
+        // Set coordinates
+        if (result.lat && result.lon) {
+          currentAddressCoordinates = [result.lon, result.lat];
+        } else if (result.parcelCentroid) {
+          currentAddressCoordinates = [result.parcelCentroid.lon, result.parcelCentroid.lat];
+        }
+        console.log('Coordinates after standardization:', currentAddressCoordinates); // Debugging log
+
+        // Add the address point to the map
+        if (currentAddressCoordinates) {
+          const addressPoint = new ol.Feature({
+            geometry: new ol.geom.Point(ol.proj.fromLonLat(currentAddressCoordinates))
+          });
+          addressPoint.setStyle(new ol.style.Style({
+            image: new ol.style.Icon({
+              src: 'https://openlayers.org/en/v6.5.0/examples/data/icon.png'
+            })
+          }));
+          const vectorSource = new ol.source.Vector({
+            features: [addressPoint]
+          });
+          const vectorLayer = new ol.layer.Vector({
+            source: vectorSource
+          });
+          map.addLayer(vectorLayer);
+          searchResultLayers.push(vectorLayer);
+          map.getView().setCenter(ol.proj.fromLonLat(currentAddressCoordinates));
+          map.getView().setZoom(15);
+        }
         // Add pedestrian entrances to the map
         if (result.pedestrianEntrances) {
           const pedestrianFeatures = result.pedestrianEntrances.map(entrance => {
@@ -929,33 +984,62 @@ document.getElementById('checkIntersectionButton').addEventListener('click', fun
             })
           });
           map.addLayer(pedestrianLayer);
+          searchResultLayers.push(pedestrianLayer); // Track this layer
+
         }
         // Display FEMA data as charts
         if (result.femaData) {
-  console.log('FEMA Data before rendering chart:', result.femaData); // Debugging log
-  displayFemaChart(result.femaData);
-}
-      if (result.parcel_match) {
-                // Show loading message
-                document.getElementById('loadingOverlay').style.display = 'block';
-                document.getElementById('address').disabled = true;
-                document.querySelector('#addressForm button').disabled = true;
+          console.log('FEMA Data before rendering chart:', result.femaData); // Debugging log
+          displayFemaChart(result.femaData);
+        }
 
-                try {
-                    const predict_results = await addBuildingAndTrees(result.parcel_match);
-                    console.log('Prediction results:', predict_results);
-                    predict_results[0]._color = 'brown';
-                    predict_results[1]._color = 'green';
-                    const extents = predict_results.map(result => displayGeojsonData(result)).filter(extent => extent);
+        // call sam-geo and add building and trees to the map
+        if (currentAddressCoordinates) {
+          // Show loading message
+          document.getElementById('loadingOverlay').style.display = 'block';
+          document.getElementById('address').disabled = true;
+          document.querySelector('#addressForm button').disabled = true;
 
-                } finally {
-                    // Hide loading message
-                    document.getElementById('loadingOverlay').style.display = 'none';
-                    document.getElementById('address').disabled = false;
-                    document.querySelector('#addressForm button').disabled = false;
-                }
-            }      
-} catch (error) {
+          try {
+            let geoJsonData;
+            
+            if (result.parcel_match) {
+              // Use parcel match if available
+              geoJsonData = result.parcel_match;
+            } else {
+              // Create a 10-meter buffer around the address point as fallback
+              const point = turf.point(currentAddressCoordinates);
+              const buffer = turf.buffer(point, 50, { units: 'meters' });
+              
+              // Convert the buffer to a GeoJSON feature collection
+              geoJsonData = {
+                "features": [{
+                  "type": "Feature",
+                  "properties": {},
+                  "geometry": buffer.geometry
+                }]
+              };
+            }
+            
+            // Run the prediction with either parcel match or buffer
+            const predict_results = await addBuildingAndTrees(geoJsonData);
+            console.log('Prediction results:', predict_results);
+            
+            if (predict_results && predict_results.length >= 2) {
+              predict_results[0]._color = 'brown';
+              predict_results[1]._color = 'green';
+              const extents = predict_results.map(result => displayGeojsonData(result)).filter(extent => extent);
+            }
+          } catch (error) {
+            console.error('Error predicting buildings and trees:', error);
+          } finally {
+            // Hide loading message
+            document.getElementById('loadingOverlay').style.display = 'none';
+            document.getElementById('address').disabled = false;
+            document.querySelector('#addressForm button').disabled = false;
+          }
+        }
+      } catch (error) {
         console.error('Error:', error);
       }
       // run sam-geo and add building and trees to the map
@@ -976,53 +1060,53 @@ document.getElementById('checkIntersectionButton').addEventListener('click', fun
     // Function to display FEMA data as charts
 
     function displayFemaChart(femaData) {
-  console.log('FEMA Data:', femaData); // Debugging log
+      console.log('FEMA Data:', femaData); // Debugging log
 
-  if (!femaData || Object.keys(femaData).length === 0) {
-    console.warn('No FEMA data available to display.');
-    document.getElementById('femaChart').style.display = 'none'; // Hide the chart if no data
-    alert('No FEMA data available for the given address.');
-    return;
-  }
-
-  const ctx = document.getElementById('femaChart').getContext('2d');
-  console.log('Chart context:', ctx); // Debugging log
-
-  const labels = Object.keys(femaData); // Extract labels (keys)
-  const data = Object.values(femaData); // Extract data (values)
-
-  console.log('Chart labels:', labels); // Debugging log
-  console.log('Chart data:', data); // Debugging log
-
-  // Clear any existing chart
-  if (window.femaChartInstance) {
-    window.femaChartInstance.destroy();
-  }
-
-  // Create a new chart
-  window.femaChartInstance = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: 'Disaster Counts by Type',
-        data: data,
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        borderColor: 'rgba(75, 192, 192, 1)',
-        borderWidth: 1
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        y: {
-          beginAtZero: true
-        }
+      if (!femaData || Object.keys(femaData).length === 0) {
+        console.warn('No FEMA data available to display.');
+        document.getElementById('femaChart').style.display = 'none'; // Hide the chart if no data
+        alert('No FEMA data available for the given address.');
+        return;
       }
+
+      const ctx = document.getElementById('femaChart').getContext('2d');
+      console.log('Chart context:', ctx); // Debugging log
+
+      const labels = Object.keys(femaData); // Extract labels (keys)
+      const data = Object.values(femaData); // Extract data (values)
+
+      console.log('Chart labels:', labels); // Debugging log
+      console.log('Chart data:', data); // Debugging log
+
+      // Clear any existing chart
+      if (window.femaChartInstance) {
+        window.femaChartInstance.destroy();
+      }
+
+      // Create a new chart
+      window.femaChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Disaster Counts by Type',
+            data: data,
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
     }
-  });
-}
     // ASCE API
     const ASCEApiUrls = {
       "Wind": "https://gis.asce.org/arcgis/rest/services/ASCE722/w2022_CONUS_Mosaic/ImageServer/identify",
@@ -1033,277 +1117,276 @@ document.getElementById('checkIntersectionButton').addEventListener('click', fun
       "Flood": "https://hazards.fema.gov/arcgis/rest/services/public/NFHL/MapServer/28/query?f=json&where=&returnGeometry=false&spatialRel=esriSpatialRelIntersects&geometry=%7B%22x%22%3A{x}%2C%22y%22%3A{y}%2C%22spatialReference%22%3A%7B%22wkid%22%3A4326%7D%7D&geometryType=esriGeometryPoint&inSR=4326&outFields=*&outSR=4326",
       "Tsunami": "https://gis.asce.org/arcgis/rest/services/ASCE722/ts2022_Tsunami_Feature_Services/MapServer/4/query"
     }
-function prepareUrlForImageServer(coordinates, data_category) {
-  const transformedCoordinates = ol.proj.transform(coordinates, 'EPSG:4326', 'EPSG:3857'); // Transform to EPSG:3857
-  const params = {
-    "f": "json",
-    "geometry": JSON.stringify({
-      x: transformedCoordinates[0],
-      y: transformedCoordinates[1],
-      spatialReference: { wkid: 3857 }
-    }),
-    "returnGeometry": "false",
-    "returnCatalogItems": "true",
-    "geometryType": "esriGeometryPoint",
-    "returnPixelValues": "true"
-  };
-  const queryString = new URLSearchParams();
-  for (const key in params) {
-    queryString.append(key, params[key]);
-  }
-  const url = ASCEApiUrls[data_category];
-  const fullUrl = `${url}?${queryString.toString()}`;
-  return fullUrl;
-}
-  function prepareUrlForMapServer(coordinates, data_category) {
-    const params = {
-      "f": "json",
-      "where": "1=1",
-      "returnGeometry": "false",
-      "spatialRel": "esriSpatialRelIntersects",
-      "geometry": JSON.stringify({
-        x: coordinates[0],
-        y: coordinates[1],
-        spatialReference: { wkid: 3857 }
-      }),
-      "geometryType": "esriGeometryPoint",
-      "inSR": "3857",
-      "outFields": "*",
-      "outSR": "4326"
-    };
-    const queryString = new URLSearchParams();
-    for (const key in params) {
-      queryString.append(key, params[key]);
-    }
-    const url = ASCEApiUrls[data_category];
-    const fullUrl = `${url}?${queryString.toString()}`;
-    return fullUrl;
-  }
-  function prepareUrlForSeismic(coordinates, data_category) {
-    const x = coordinates[0];
-    const y = coordinates[1];
-    const url = ASCEApiUrls[data_category].replace('{x}', x).replace('{y}', y);
-    return url;
-  }
-
-  function prepareUrlForFlood(coordinates, data_category) {
-    const x = coordinates[0];
-    const y = coordinates[1];
-    const url = ASCEApiUrls[data_category].replace('{x}', x).replace('{y}', y);
-    return url;
-  }
-
-  async function fetchASCEData(coordinates, data_category) {
-  try {
-    console.log('Fetching ASCE data for coordinates:', coordinates); // Debugging log
-    let fullUrl;
-    if (data_category === "Seismic" || data_category === "Flood") {
-        fullUrl = prepareUrlForSeismic(coordinates, data_category);
-      } else{
-        fullUrl = prepareUrlForImageServer(coordinates, data_category);
+    function prepareUrlForImageServer(coordinates, data_category) {
+      const transformedCoordinates = ol.proj.transform(coordinates, 'EPSG:4326', 'EPSG:3857'); // Transform to EPSG:3857
+      const params = {
+        "f": "json",
+        "geometry": JSON.stringify({
+          x: transformedCoordinates[0],
+          y: transformedCoordinates[1],
+          spatialReference: { wkid: 3857 }
+        }),
+        "returnGeometry": "false",
+        "returnCatalogItems": "true",
+        "geometryType": "esriGeometryPoint",
+        "returnPixelValues": "true"
+      };
+      const queryString = new URLSearchParams();
+      for (const key in params) {
+        queryString.append(key, params[key]);
       }
-    console.log(`Requesting URL for ${data_category}:`, fullUrl);
-
-    const response = await fetch(fullUrl);
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const url = ASCEApiUrls[data_category];
+      const fullUrl = `${url}?${queryString.toString()}`;
+      return fullUrl;
+    }
+    function prepareUrlForMapServer(coordinates, data_category) {
+      const params = {
+        "f": "json",
+        "where": "1=1",
+        "returnGeometry": "false",
+        "spatialRel": "esriSpatialRelIntersects",
+        "geometry": JSON.stringify({
+          x: coordinates[0],
+          y: coordinates[1],
+          spatialReference: { wkid: 3857 }
+        }),
+        "geometryType": "esriGeometryPoint",
+        "inSR": "3857",
+        "outFields": "*",
+        "outSR": "4326"
+      };
+      const queryString = new URLSearchParams();
+      for (const key in params) {
+        queryString.append(key, params[key]);
+      }
+      const url = ASCEApiUrls[data_category];
+      const fullUrl = `${url}?${queryString.toString()}`;
+      return fullUrl;
+    }
+    function prepareUrlForSeismic(coordinates, data_category) {
+      const x = coordinates[0];
+      const y = coordinates[1];
+      const url = ASCEApiUrls[data_category].replace('{x}', x).replace('{y}', y);
+      return url;
     }
 
-    const data = await response.json();
-    console.log(`Received data for ${data_category}:`, data);
+    function prepareUrlForFlood(coordinates, data_category) {
+      const x = coordinates[0];
+      const y = coordinates[1];
+      const url = ASCEApiUrls[data_category].replace('{x}', x).replace('{y}', y);
+      return url;
+    }
 
-    // Validation logic for different load types
-    if (data_category === "Wind") {
-      if (data.value === "NoData") {
-        console.warn(`No data found for ${data_category} at the given coordinates.`);
-        alert(`No data found for ${data_category} at the given coordinates.`);
+    async function fetchASCEData(coordinates, data_category) {
+      try {
+        console.log('Fetching ASCE data for coordinates:', coordinates); // Debugging log
+        let fullUrl;
+        if (data_category === "Seismic" || data_category === "Flood") {
+          fullUrl = prepareUrlForSeismic(coordinates, data_category);
+        } else {
+          fullUrl = prepareUrlForImageServer(coordinates, data_category);
+        }
+        console.log(`Requesting URL for ${data_category}:`, fullUrl);
+
+        const response = await fetch(fullUrl);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log(`Received data for ${data_category}:`, data);
+
+        // Validation logic for different load types
+        if (data_category === "Wind") {
+          if (data.value === "NoData") {
+            console.warn(`No data found for ${data_category} at the given coordinates.`);
+            alert(`No data found for ${data_category} at the given coordinates.`);
+            return null;
+          }
+        } else if (data_category === "Seismic") {
+          if (!data.response || Object.keys(data.response).length === 0) {
+            console.warn(`No data found for ${data_category} at the given coordinates.`);
+            alert(`No data found for ${data_category} at the given coordinates.`);
+            return null;
+          }
+        } else if (data_category === "Flood") {
+          if (!data.features || data.features.length === 0) {
+            console.warn(`No data found for ${data_category} at the given coordinates.`);
+            alert(`No data found for ${data_category} at the given coordinates.`);
+            return null;
+          }
+          return data.features[0]?.attributes?.FLD_ZONE || 'Unknown';
+        } else if (data_category === "Ice") {
+          if (data.value === "NoData") {
+            console.warn(`No data found for ${data_category} at the given coordinates.`);
+            alert(`No data found for ${data_category} at the given coordinates.`);
+            return null;
+          }
+        } else {
+          console.warn(`Validation for ${data_category} is not implemented.`);
+          return null;
+        }
+
+        return processASCEData(data, data_category);
+      } catch (error) {
+        console.error(`Error fetching ${data_category} data:`, error);
+        alert(`Failed to fetch ${data_category} data. Please try again later.`);
+        throw error;
+      }
+    }
+
+    function processASCEData(data, data_category) {
+      if (data_category === "Wind") {
+        const primaryValue = parseFloat(data.value).toFixed(2);
+        const windValues = data.properties.Values.map(val => parseFloat(val).toFixed(2));
+        return [primaryValue, ...windValues];
+      } else if (data_category === "Ice") {
+        return parseFloat(data.value).toFixed(2);
+      } else if (data_category === "Seismic") {
+        if (!data.response || !data.response.data) {
+          console.warn('No seismic data found');
+          return null;
+        }
+        return {
+          riskCategory: data.request.riskCategory || 'I',
+          sdc: data.response.data.sdc || 'N/A',
+          ss: data.response.data.ss,
+          s1: data.response.data.s1,
+          sms: data.response.data.sms,
+          sm1: data.response.data.sm1,
+          sds: data.response.data.sds,
+          sd1: data.response.data.sd1,
+          tl: data.response.data.tl,
+          pgauh: data.response.data.pgauh,
+          pgam: data.response.data.pgam
+        };
+      } else if (data_category === "Flood") {
+        if (!data.features || data.features.length === 0) {
+          console.warn('No flood data found');
+          return null;
+        }
+        return data.features[0]?.attributes?.FLD_ZONE || 'Unknown';
+      } else {
+        console.warn(`Processing for ${data_category} is not implemented.`);
         return null;
       }
-    } else if (data_category === "Seismic") {
-      if (!data.response || Object.keys(data.response).length === 0) {
-        console.warn(`No data found for ${data_category} at the given coordinates.`);
-        alert(`No data found for ${data_category} at the given coordinates.`);
+    }
+    // Process wind load data
+    function processWindData(result) {
+      if (!result || !result.properties || !result.properties.Values) {
+        console.log('No wind data found');
+        return [];
+      }
+      // Extract the primary wind speed value
+      const primaryValue = result.value;
+
+      // Extract all "Values" from the properties
+      const windValues = result.properties.Values.map(val => parseFloat(val).toFixed(2));
+      const sortedValues = [...windValues].sort((a, b) => a - b);
+
+      // Include the primary value at the beginning of the array
+      return [primaryValue, ...sortedValues];
+    }
+    // Process ice load data
+    function processIceData(result) {
+      if (!result || !result.results || result.results.length === 0) {
+        console.log('No ice data found');
         return null;
       }
-    } else if (data_category === "Flood") {
-      if (!data.features || data.features.length === 0) {
-        console.warn(`No data found for ${data_category} at the given coordinates.`);
-        alert(`No data found for ${data_category} at the given coordinates.`);
-        return null;
+      const iceValue = result.results[0].attributes?.Value;
+      return typeof iceValue === 'number' ? iceValue.toFixed(2) : null;
+    }
+
+    // Process flood data
+    function processFloodData(result) {
+      return result?.features?.[0]?.attributes?.FLD_ZONE || 'No flood zone data available';
+    }
+    // Process seismic data
+    function processSeismicData(data) {
+      if (!data || !data.response) {
+        return null; // Ensure this return is inside the function
       }
-      return data.features[0]?.attributes?.FLD_ZONE || 'Unknown';
-    } else if (data_category === "Ice") {
-      if (data.value === "NoData") {
-        console.warn(`No data found for ${data_category} at the given coordinates.`);
-        alert(`No data found for ${data_category} at the given coordinates.`);
-        return null;
-      }
-    } else {
-      console.warn(`Validation for ${data_category} is not implemented.`);
-      return null;
+      return {
+        riskCategory: data.request.riskCategory || 'I',
+        sdc: data.response.data.sdc || 'N/A',
+        ss: data.response.data.ss,
+        s1: data.response.data.s1,
+        sms: data.response.data.sms,
+        sm1: data.response.data.sm1,
+        sds: data.response.data.sds,
+        sd1: data.response.data.sd1,
+        tl: data.response.data.tl,
+        pgauh: data.response.data.pgauh,
+        pgam: data.response.data.pgam
+      };
     }
-
-    return processASCEData(data, data_category);
-  } catch (error) {
-    console.error(`Error fetching ${data_category} data:`, error);
-    alert(`Failed to fetch ${data_category} data. Please try again later.`);
-    throw error;
-  }
-}
-
-function processASCEData(data, data_category) {
-  if (data_category === "Wind") {
-    const primaryValue = parseFloat(data.value).toFixed(2);
-    const windValues = data.properties.Values.map(val => parseFloat(val).toFixed(2));
-    return [primaryValue, ...windValues];
-  } else if (data_category === "Ice") {
-    return parseFloat(data.value).toFixed(2);
-  } else if (data_category === "Seismic") {
-    if (!data.response || !data.response.data) {
-      console.warn('No seismic data found');
-      return null;
-    }
-    return {
-      riskCategory: data.request.riskCategory || 'I',
-      sdc: data.response.data.sdc || 'N/A',
-      ss: data.response.data.ss,
-      s1: data.response.data.s1,
-      sms: data.response.data.sms,
-      sm1: data.response.data.sm1,
-      sds: data.response.data.sds,
-      sd1: data.response.data.sd1,
-      tl: data.response.data.tl,
-      pgauh: data.response.data.pgauh,
-      pgam: data.response.data.pgam
-    };
-  } else if (data_category === "Flood") {
-    if (!data.features || data.features.length === 0) {
-      console.warn('No flood data found');
-      return null;
-    }
-    return data.features[0]?.attributes?.FLD_ZONE || 'Unknown';
-  } else {
-    console.warn(`Processing for ${data_category} is not implemented.`);
-    return null;
-  }
-}
-// Process wind load data
-function processWindData(result) {
-  if (!result || !result.properties || !result.properties.Values) {
-    console.log('No wind data found');
-    return [];
-  }
-  // Extract the primary wind speed value
-  const primaryValue = result.value;
-
-  // Extract all "Values" from the properties
-  const windValues = result.properties.Values.map(val => parseFloat(val).toFixed(2));
-  const sortedValues = [...windValues].sort((a, b) => a - b);
-
-  // Include the primary value at the beginning of the array
-  return [primaryValue, ...sortedValues];
-}
-// Process ice load data
-function processIceData(result) {
-  if (!result || !result.results || result.results.length === 0) {
-    console.log('No ice data found');
-    return null;
-  }
-  const iceValue = result.results[0].attributes?.Value;
-  return typeof iceValue === 'number' ? iceValue.toFixed(2) : null;
-}
-
-// Process flood data
-function processFloodData(result) {
-  return result?.features?.[0]?.attributes?.FLD_ZONE || 'No flood zone data available';
-}
-// Process seismic data
-function processSeismicData(data) {
-  if (!data || !data.response) {
-    return null; // Ensure this return is inside the function
-  }
-  return {
-    riskCategory: data.request.riskCategory || 'I',
-    sdc: data.response.data.sdc || 'N/A',
-    ss: data.response.data.ss,
-    s1: data.response.data.s1,
-    sms: data.response.data.sms,
-    sm1: data.response.data.sm1,
-    sds: data.response.data.sds,
-    sd1: data.response.data.sd1,
-    tl: data.response.data.tl,
-    pgauh: data.response.data.pgauh,
-    pgam: data.response.data.pgam
-  };
-}
     // Generate seismic report
-// Generate seismic report
-function generateSeismicReport(seismicData) {
-  if (!seismicData) {
-    return '<div class="alert alert-warning">Unable to retrieve seismic data</div>';
-  }
+    // Generate seismic report
+    function generateSeismicReport(seismicData) {
+      if (!seismicData) {
+        return '<div class="alert alert-warning">Unable to retrieve seismic data</div>';
+      }
 
-  let tableHTML = '<table class="table table-striped table-bordered">';
-  tableHTML += '<thead class="thead-dark"><tr><th>Parameter</th><th>Value</th></tr></thead>';
-  tableHTML += '<tbody>';
-  tableHTML += `<tr><td><b>Risk Category</b></td><td>${seismicData.riskCategory}</td></tr>`;
-  tableHTML += `<tr><td><b>Seismic Design Category (SDC)</b></td><td>${seismicData.sdc}</td></tr>`;
-  tableHTML += `<tr><td><b>SS</b></td><td>${seismicData.ss}</td></tr>`;
-  tableHTML += `<tr><td><b>S1</b></td><td>${seismicData.s1}</td></tr>`;
-  tableHTML += `<tr><td><b>SMS</b></td><td>${seismicData.sms}</td></tr>`;
-  tableHTML += `<tr><td><b>SM1</b></td><td>${seismicData.sm1}</td></tr>`;
-  tableHTML += `<tr><td><b>SDS</b></td><td>${seismicData.sds}</td></tr>`;
-  tableHTML += `<tr><td><b>SD1</b></td><td>${seismicData.sd1}</td></tr>`;
-  tableHTML += `<tr><td><b>TL</b></td><td>${seismicData.tl}</td></tr>`;
-  tableHTML += `<tr><td><b>PGAUH</b></td><td>${seismicData.pgauh}</td></tr>`;
-  tableHTML += `<tr><td><b>PGAM</b></td><td>${seismicData.pgam}</td></tr>`;
-  tableHTML += '</tbody></table>';
-  return tableHTML;
-}
-function generateFloodReport(floodZone) {
-  if (!floodZone) {
-    return '<div class="alert alert-warning">No flood data available for the given coordinates.</div>';
-  }
+      let tableHTML = '<table class="table table-striped table-bordered">';
+      tableHTML += '<thead class="thead-dark"><tr><th>Parameter</th><th>Value</th></tr></thead>';
+      tableHTML += '<tbody>';
+      tableHTML += `<tr><td><b>Risk Category</b></td><td>${seismicData.riskCategory}</td></tr>`;
+      tableHTML += `<tr><td><b>Seismic Design Category (SDC)</b></td><td>${seismicData.sdc}</td></tr>`;
+      tableHTML += `<tr><td><b>SS</b></td><td>${seismicData.ss}</td></tr>`;
+      tableHTML += `<tr><td><b>S1</b></td><td>${seismicData.s1}</td></tr>`;
+      tableHTML += `<tr><td><b>SMS</b></td><td>${seismicData.sms}</td></tr>`;
+      tableHTML += `<tr><td><b>SM1</b></td><td>${seismicData.sm1}</td></tr>`;
+      tableHTML += `<tr><td><b>SDS</b></td><td>${seismicData.sds}</td></tr>`;
+      tableHTML += `<tr><td><b>SD1</b></td><td>${seismicData.sd1}</td></tr>`;
+      tableHTML += `<tr><td><b>TL</b></td><td>${seismicData.tl}</td></tr>`;
+      tableHTML += `<tr><td><b>PGAUH</b></td><td>${seismicData.pgauh}</td></tr>`;
+      tableHTML += `<tr><td><b>PGAM</b></td><td>${seismicData.pgam}</td></tr>`;
+      tableHTML += '</tbody></table>';
+      return tableHTML;
+    }
+    function generateFloodReport(floodZone) {
+      if (!floodZone) {
+        return '<div class="alert alert-warning">No flood data available for the given coordinates.</div>';
+      }
 
-  return `<p><b>Flood Zone:</b> ${floodZone}</p>`;
-}
-function generateIceReport(iceThickness) {
-  if (!iceThickness) {
-    return '<div class="alert alert-warning">No ice data available for the given coordinates.</div>';
-  }
+      return `<p><b>Flood Zone:</b> ${floodZone}</p>`;
+    }
+    function generateIceReport(iceThickness) {
+      if (!iceThickness) {
+        return '<div class="alert alert-warning">No ice data available for the given coordinates.</div>';
+      }
 
-  return `<p><b>Ice Thickness:</b> ${iceThickness} inches</p>`;
-}
+      return `<p><b>Ice Thickness:</b> ${iceThickness} inches</p>`;
+    }
     // Generate wind load report
-function generateWindReport(windData) {
-      debugger
-  if (!windData || windData.length === 0) {
-    return '<div class="alert alert-warning">No wind data available for the given coordinates.</div>';
-  }
-  // sort
-  const primaryValue = windData[0];
-  const sortedRemainingValues = [...windData.slice(1)].sort((a, b) => a - b);
-  windData = [primaryValue, ...sortedRemainingValues];
+    function generateWindReport(windData) {
+      if (!windData || windData.length === 0) {
+        return '<div class="alert alert-warning">No wind data available for the given coordinates.</div>';
+      }
+      // sort
+      const primaryValue = windData[0];
+      const sortedRemainingValues = [...windData.slice(1)].sort((a, b) => a - b);
+      windData = [primaryValue, ...sortedRemainingValues];
 
-  let tableHTML = '<table class="table table-striped table-bordered">';
-  tableHTML += '<thead class="thead-dark"><tr><th>Parameter</th><th>Value (mph)</th></tr></thead>';
-  tableHTML += '<tbody>';
-  tableHTML += `<tr><td><b>Primary Wind Speed</b></td><td>${windData[0]}</td></tr>`;
-  tableHTML += `<tr><td>10-year MRI</td><td>${windData[1]}</td></tr>`;
-  tableHTML += `<tr><td>25-year MRI</td><td>${windData[2]}</td></tr>`;
-  tableHTML += `<tr><td>50-year MRI</td><td>${windData[3]}</td></tr>`;
-  tableHTML += `<tr><td>100-year MRI</td><td>${windData[4]}</td></tr>`;
-  tableHTML += `<tr><td>300-year MRI</td><td>${windData[5]}</td></tr>`;
-  tableHTML += `<tr><td>700-year MRI</td><td>${windData[6]}</td></tr>`;
-  tableHTML += `<tr><td>1,700-year MRI</td><td>${windData[7]}</td></tr>`;
-  tableHTML += `<tr><td>3,000-year MRI</td><td>${windData[8]}</td></tr>`;
-  tableHTML += `<tr><td>10,000-year MRI</td><td>${windData[9]}</td></tr>`;
-  tableHTML += '</tbody></table>';
-  return tableHTML;
-}
+      let tableHTML = '<table class="table table-striped table-bordered">';
+      tableHTML += '<thead class="thead-dark"><tr><th>Parameter</th><th>Value (mph)</th></tr></thead>';
+      tableHTML += '<tbody>';
+      tableHTML += `<tr><td><b>Primary Wind Speed</b></td><td>${windData[0]}</td></tr>`;
+      tableHTML += `<tr><td>10-year MRI</td><td>${windData[1]}</td></tr>`;
+      tableHTML += `<tr><td>25-year MRI</td><td>${windData[2]}</td></tr>`;
+      tableHTML += `<tr><td>50-year MRI</td><td>${windData[3]}</td></tr>`;
+      tableHTML += `<tr><td>100-year MRI</td><td>${windData[4]}</td></tr>`;
+      tableHTML += `<tr><td>300-year MRI</td><td>${windData[5]}</td></tr>`;
+      tableHTML += `<tr><td>700-year MRI</td><td>${windData[6]}</td></tr>`;
+      tableHTML += `<tr><td>1,700-year MRI</td><td>${windData[7]}</td></tr>`;
+      tableHTML += `<tr><td>3,000-year MRI</td><td>${windData[8]}</td></tr>`;
+      tableHTML += `<tr><td>10,000-year MRI</td><td>${windData[9]}</td></tr>`;
+      tableHTML += '</tbody></table>';
+      return tableHTML;
+    }
     // Add "View Results" button click event handler
-document.getElementById('viewResultsButton').addEventListener('click', async function() {
+    document.getElementById('viewResultsButton').addEventListener('click', async function () {
       if (!currentAddressCoordinates) {
         alert('Please enter an address first');
         return;
@@ -1344,139 +1427,172 @@ document.getElementById('viewResultsButton').addEventListener('click', async fun
       buttonText.textContent = 'View Results';
       loadingSpinner.style.display = 'none';
     });
-function displayASCEReport(data, category) {
-  let reportHTML = '';
-  if (!data) {
-    reportHTML = `<div class="alert alert-warning">No data found for ${category} at the given coordinates.</div>`;
-  } else if (category === 'Wind') {
-    reportHTML = generateWindReport(data);
-  } else if (category === 'Seismic') {
-    reportHTML = generateSeismicReport(data);
-  } else if (category === 'Flood') {
-    reportHTML = generateFloodReport(data);
-  } else if (category === 'Ice') {
-    reportHTML = generateIceReport(data);
-  } else {
-    reportHTML = `<div class="alert alert-warning">Report generation for ${category} is not implemented yet.</div>`;
-  }
+    function displayASCEReport(data, category) {
+      let reportHTML = '';
+      if (!data) {
+        reportHTML = `<div class="alert alert-warning">No data found for ${category} at the given coordinates.</div>`;
+      } else if (category === 'Wind') {
+        reportHTML = generateWindReport(data);
+      } else if (category === 'Seismic') {
+        reportHTML = generateSeismicReport(data);
+      } else if (category === 'Flood') {
+        reportHTML = generateFloodReport(data);
+      } else if (category === 'Ice') {
+        reportHTML = generateIceReport(data);
+      } else {
+        reportHTML = `<div class="alert alert-warning">Report generation for ${category} is not implemented yet.</div>`;
+      }
 
-  document.getElementById('asceReport').innerHTML = reportHTML;
-  document.getElementById('asceModalLongTitle').textContent = `${category} Report`;
-  const modal = new bootstrap.Modal(document.getElementById('asceModel'));
-  modal.show();
-}
+      document.getElementById('asceReport').innerHTML = reportHTML;
+      document.getElementById('asceModalLongTitle').textContent = `${category} Report`;
+      const modal = new bootstrap.Modal(document.getElementById('asceModel'));
+      modal.show();
+    }
     // TODO: Process rainfall data
-// Process rain data (placeholder)
-function processRainData(data) {
-  console.log('Rain data:', data);
-  // TODO: Implement logic to process rainfall data
-  return data;
-}
+    // Process rain data (placeholder)
+    function processRainData(data) {
+      console.log('Rain data:', data);
+      // TODO: Implement logic to process rainfall data
+      return data;
+    }
 
-async function addBuildingAndTrees(geojson) {
+    async function addBuildingAndTrees(geojson) {
 
 
-  const getBoundingBox = (geometry) => {
-            const olPolygon = new ol.geom.Polygon([geometry.coordinates[0]]);
-            const boundingBox = olPolygon.getExtent();
-            return boundingBox;
-        }
-            console.log('geojson', geojson);
-            // Get geometry regardless of whether geojson is object or dictionary
-            let geometry;
-            if (geojson.features) {
-                geometry = geojson.features[0].geometry;
-            } else if (geojson['features']) {
-                geometry = geojson['features'][0]['geometry'];
-            } else {
-                console.log('invalid geojson format');
-                return [];
-            }
-            // Get bounding box of geojson
-            // geojson will be feature collection, we need to get the bounding box of the first feature
-            const boundingBox = getBoundingBox(geometry);
-            const myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
+      const getBoundingBox = (geometry) => {
+        const olPolygon = new ol.geom.Polygon([geometry.coordinates[0]]);
+        const boundingBox = olPolygon.getExtent();
+        return boundingBox;
+      }
+      console.log('geojson', geojson);
+      // Get geometry regardless of whether geojson is object or dictionary
+      let geometry;
+      if (geojson.features) {
+        geometry = geojson.features[0].geometry;
+      } else if (geojson['features']) {
+        geometry = geojson['features'][0]['geometry'];
+      } else {
+        console.log('invalid geojson format');
+        return [];
+      }
+      // Get bounding box of geojson
+      // geojson will be feature collection, we need to get the bounding box of the first feature
+      const boundingBox = getBoundingBox(geometry);
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
 
-            const textPrompts = [{
-                value: "buildings",
-                box_threshold: 0.4,
-                text_threshold: 0.25
-            }, {
-                value: "tree",
-                box_threshold: 0.25,
-                text_threshold: 0.25
-            }];
+      const textPrompts = [{
+        value: "buildings",
+        box_threshold: 0.4,
+        text_threshold: 0.25
+      }, {
+        value: "tree",
+        box_threshold: 0.25,
+        text_threshold: 0.25
+      }];
 
-            try {
-                const requestBody = {
-                    "bounding_box": boundingBox,
-                    "text_prompts": textPrompts.map(prompt => ({
-                        value: prompt.value,
-                        box_threshold: prompt.box_threshold,
-                        text_threshold: prompt.text_threshold
-                    })),
-                    "zoom_level": 21
-                };
-                
-                console.log('requestBody', requestBody);
-                
-                const response = await fetch("http://localhost:8001/api/v1/predict", {
-                    method: "POST",
-                    headers: myHeaders,
-                    body: JSON.stringify(requestBody),
-                    redirect: "follow"
-                });
+      try {
+        const requestBody = {
+          "bounding_box": boundingBox,
+          "text_prompts": textPrompts.map(prompt => ({
+            value: prompt.value,
+            box_threshold: prompt.box_threshold,
+            text_threshold: prompt.text_threshold
+          })),
+          "zoom_level": 21
+        };
 
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
+        console.log('requestBody', requestBody);
 
-                return await response.json();
+        const response = await fetch("http://localhost:8001/api/v1/predict", {
+          method: "POST",
+          headers: myHeaders,
+          body: JSON.stringify(requestBody),
+          redirect: "follow"
+        });
 
-            } catch (error) {
-                console.error("Error in addBuildingAndTrees:", error);
-                return [];
-            }
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
         }
 
-        
-function displayGeojsonData(geojson) {
-            if (geojson) {
-                // Transform coordinates from WGS84 to Web Mercator
-                const features = new ol.format.GeoJSON({
-                    dataProjection: 'EPSG:4326',
-                    featureProjection: 'EPSG:3857'
-                }).readFeatures(geojson);
+        return await response.json();
 
-                const vectorSource = new ol.source.Vector({
-                    features: features
-                });
-                // color for tree and building
-                const color = geojson._color;
-                const vectorLayer = getPolygonLayer(color, vectorSource);
-                map.addLayer(vectorLayer);
-            }
+      } catch (error) {
+        console.error("Error in addBuildingAndTrees:", error);
+        return [];
+      }
+    }
+
+
+    function displayGeojsonData(geojson) {
+      if (geojson) {
+        // Transform coordinates from WGS84 to Web Mercator
+        const features = new ol.format.GeoJSON({
+          dataProjection: 'EPSG:4326',
+          featureProjection: 'EPSG:3857'
+        }).readFeatures(geojson);
+
+        const vectorSource = new ol.source.Vector({
+          features: features
+        });
+        // color for tree and building
+        const color = geojson._color;
+        const vectorLayer = getPolygonLayer(color, vectorSource);
+        map.addLayer(vectorLayer);
+        searchResultLayers.push(vectorLayer); // Track this layer
+      }
+    }
+
+    function getPolygonLayer(color, source) {
+      const vectorLayer = new ol.layer.Vector({
+        title: 'Polygon Layer',
+        source: source,
+        opacity: 0.5,
+        style: new ol.style.Style({
+          fill: new ol.style.Fill({
+            color: color
+          }),
+          stroke: new ol.style.Stroke({
+            color: 'black',
+            width: 4
+          })
+        })
+      });
+      return vectorLayer;
+    }
+    // Function to clear previous search results
+    function clearSearchResults() {
+      // Remove all search result layers from the map
+      searchResultLayers.forEach(layer => {
+        map.removeLayer(layer);
+      });
+      
+      // Clear the array
+      searchResultLayers = [];
+      
+      // Clear any displayed information
+      document.getElementById('beforeAddress').textContent = '';
+      document.getElementById('afterAddress').textContent = '';
+      document.getElementById('confidenceScore').textContent = '';
+      document.getElementById('summary').textContent = '';
+      document.getElementById('parcelDetails').textContent = '';
+      
+      // Clear any tab content
+      const summaryLists = document.querySelectorAll('[id^="summaryList"]');
+      summaryLists.forEach(list => {
+        list.innerHTML = '';
+      });
+      
+      // Reset tabs to show counts
+      const tabs = document.querySelectorAll('.tabs li[data-tab^="tab"]');
+      tabs.forEach((tab, index) => {
+        if (index < olLayers.length) {
+          tab.textContent = olLayers[index].title;
         }
+      });
+    }
 
-        function getPolygonLayer(color, source) {
-            const vectorLayer = new ol.layer.Vector({
-                title: 'Polygon Layer',
-                source: source,
-                opacity: 0.5,
-                style: new ol.style.Style({
-                    fill: new ol.style.Fill({
-                        color: color
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: 'black',
-                        width: 4
-                    })
-                })
-            });
-            return vectorLayer;
-        }
-
- </script>
+  </script>
 </body>
+
 </html>
