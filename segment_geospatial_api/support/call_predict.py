@@ -4,7 +4,6 @@ import asyncio
 import glob
 import json
 from datetime import datetime
-import pytest, unittest
 
 # Add the project root directory to Python path
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -19,7 +18,7 @@ def save_geojson(data, prefix="test_result"):
     filename = f"{prefix}_{timestamp}.geojson"
     
     # Create results directory if it doesn't exist
-    results_dir = os.path.join(project_root, "tests/test_results")
+    results_dir = os.path.join(project_root, "support/test_results")
     os.makedirs(results_dir, exist_ok=True)
     
     filepath = os.path.join(results_dir, filename)
