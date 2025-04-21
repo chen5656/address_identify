@@ -31,16 +31,14 @@ def save_geojson(data, prefix="test_result"):
     return filepath
 
 async def call_predict(request: PredictionRequest):
-    try:        
-        _result = await predictor.make_prediction(
+    try:
+        _result = await predictor.make_predictions(
             bounding_box=request.bounding_box,
-            text_prompt=request.text_prompt,
+            text_prompts=request.text_prompts,
             zoom_level=request.zoom_level,
-            box_threshold=request.box_threshold,
-            text_threshold=request.text_threshold,  
         )
         return _result
-        
+
     except Exception as e:
         print(f"Prediction error: {str(e)}")
         raise
@@ -55,13 +53,13 @@ if __name__ == "__main__":
             -96.78423468921088,
             32.769729127062774
         ],
-        "text_prompt": "buildings",
         "zoom_level": 18,
-        "box_threshold": 0.4,
-        "text_threshold": 0.24,
+        "text_prompts": [
+            {"value": "buildings", "box_threshold": 0.4, "text_threshold": 0.24}
+        ]
     }
-        
-    
+
+
     request = PredictionRequest(**request_data)
     
     # Run the async function
@@ -70,21 +68,25 @@ if __name__ == "__main__":
     # Validate result structure
     assert result is not None
     assert result['geojson'] is not None
-    assert result['geojson']['type'] == 'FeatureCollection'
-    assert len(result['geojson']['features']) > 0
-    
+    assert isinstance(result['geojson'], list)
+    assert any(geojson['features'] for geojson in result['geojson'])
+
     # Validate feature structure
-    feature = result['geojson']['features'][0]
+    geojson_with_features = next(geojson for geojson in result['geojson'] if geojson['features'])
+    feature = geojson_with_features['features'][0]
     assert feature['type'] == 'Feature'
     assert feature['geometry']['type'] == 'Polygon'
-    
+
     # Save the GeoJSON result
     if result['geojson']:
-        saved_file = save_geojson(
-            result['geojson'], 
-            f"trees_detection_{request.zoom_level}"
-        )
-        print(f"Found {len(result['geojson']['features'])} features")
+        # Save each GeoJSON to a separate file
+        for i, geojson in enumerate(result['geojson']):
+            if geojson and geojson['features']:
+                saved_file = save_geojson(
+                    geojson,
+                    f"trees_detection_{request.zoom_level}_{i}"
+                )
+                print(f"Found {len(geojson['features'])} features in GeoJSON {i}")
      
     # Verify temporary files are cleaned up
     temp_files = glob.glob("*.tif") + glob.glob("*.geojson")
