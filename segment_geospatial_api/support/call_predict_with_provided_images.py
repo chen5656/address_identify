@@ -41,14 +41,34 @@ async def call_predict_with_image(input_image_path, text_prompts):
         print(f"Prediction error: {str(e)}")
         raise
 
+async def process_all_images(images_folder, text_prompts):
+    """Process all images in the specified folder"""
+    image_files = glob.glob(os.path.join(images_folder, "*.jpg")) + \
+                 glob.glob(os.path.join(images_folder, "*.jpeg")) + \
+                 glob.glob(os.path.join(images_folder, "*.png"))
+    
+    results = []
+    for image_file in image_files:
+        print(f"Processing image: {os.path.basename(image_file)}")
+        try:
+            result = await call_predict_with_image(image_file, text_prompts)
+            image_name = os.path.basename(image_file)
+            save_geojson(result, prefix=f"result_{os.path.splitext(image_name)[0]}")
+            results.append({"image": image_file, "result": result})
+        except Exception as e:
+            print(f"Error processing {image_file}: {str(e)}")
+    
+    return results
+
 if __name__ == "__main__":
-    # Path to your input image
-    input_image = os.path.join(project_root, "support/test_images/a1.jpg")
+    # Path to your images folder
+    images_folder = os.path.join(project_root, "support/test_images")
             
     # Define text prompts
     text_prompts = [
-        PromptConfig(value="poles", box_threshold=0.4, text_threshold=0.54),
+        PromptConfig(value="poles", box_threshold=0.38, text_threshold=0.80),
     ]
     
-    # Run the async function
-    result = asyncio.run(call_predict_with_image(input_image, text_prompts))
+    # Run the async function to process all images
+    results = asyncio.run(process_all_images(images_folder, text_prompts))
+    print(f"Processed {len(results)} images successfully")
